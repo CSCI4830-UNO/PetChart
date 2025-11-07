@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Pet } from "@/models/Pet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ interface PetCardProps {
 
 export function PetCard({ pet }: PetCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const router = useRouter();
 
     const getSpeciesEmoji = (species: string) => {
         switch (species.toLowerCase()) {
@@ -173,7 +175,11 @@ export function PetCard({ pet }: PetCardProps) {
                     )}
 
                     <div className="flex gap-2 pt-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => router.push(`/pets/edit/${pet._id}`)}
+                        >
                             Edit Pet
                         </Button>
                         <Button variant="outline" size="sm">

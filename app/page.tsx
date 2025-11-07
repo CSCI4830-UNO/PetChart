@@ -6,110 +6,13 @@ import { AddPetCard } from "@/components/AddPetCard";
 import { Heart, PawPrint } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-// Sample pet data for demonstration
-const samplePets = [
-  {
-    _id: "1",
-    name: "Bella",
-    species: "Dog",
-    breed: "Golden Retriever",
-    age: 3,
-    weight: 65,
-    color: "Golden",
-    microchipId: "123456789",
-    dateAdded: new Date("2024-01-15"),
-    owner: "user@example.com",
-    medicalHistory: {
-      vaccinations: [
-        {
-          vaccine: "Rabies",
-          date: new Date("2024-03-10"),
-          nextDue: new Date("2025-03-10")
-        },
-        {
-          vaccine: "DHPP",
-          date: new Date("2024-03-10"),
-          nextDue: new Date("2025-03-10")
-        }
-      ],
-      treatments: [
-        {
-          treatment: "Dental Cleaning",
-          date: new Date("2024-02-20"),
-          notes: "Routine cleaning, no issues found"
-        }
-      ],
-      medications: [
-        {
-          medication: "Heartguard Plus",
-          dosage: "68mg monthly",
-          startDate: new Date("2024-01-01"),
-          endDate: undefined,
-          notes: "Heartworm prevention"
-        }
-      ]
-    },
-    notes: "Very friendly and energetic. Loves playing fetch and swimming."
-  },
-  {
-    _id: "2",
-    name: "Whiskers",
-    species: "Cat",
-    breed: "Siamese",
-    age: 5,
-    weight: 12,
-    color: "Cream and Brown",
-    dateAdded: new Date("2023-08-22"),
-    owner: "user@example.com",
-    medicalHistory: {
-      vaccinations: [
-        {
-          vaccine: "FVRCP",
-          date: new Date("2024-01-15"),
-          nextDue: new Date("2025-01-15")
-        }
-      ],
-      treatments: [],
-      medications: []
-    },
-    notes: "Indoor cat, very calm and loves to nap in sunny spots."
-  },
-  {
-    _id: "3",
-    name: "Charlie",
-    species: "Bird",
-    breed: "Parakeet",
-    age: 2,
-    color: "Blue and White",
-    dateAdded: new Date("2024-06-10"),
-    owner: "user@example.com",
-    medicalHistory: {
-      vaccinations: [],
-      treatments: [
-        {
-          treatment: "Wing trimming",
-          date: new Date("2024-09-15"),
-          notes: "Routine wing trim for safety"
-        }
-      ],
-      medications: []
-    },
-    notes: "Very talkative and loves to mimic sounds. Enjoys flying around the living room."
-  }
-];
+import { usePets } from "@/hooks/usePets";
 
 export default function Home() {
   // Get client-side session info
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  // For now, we'll use sample data. In a real app, you'd fetch pets based on the user's session
-  const pets = samplePets;
-
-  const handleAddPet = () => {
-    console.log("Add new pet functionality to be implemented");
-  };
+  const { pets, loading, error } = usePets();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -158,18 +61,18 @@ export default function Home() {
             {/* Stats Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
-                <div className="text-3xl font-bold text-blue-600">{pets.length}</div>
+                <div className="text-3xl font-bold text-blue-600">{loading ? "..." : pets.length}</div>
                 <div className="text-gray-600">Total Pets</div>
               </div>
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
                 <div className="text-3xl font-bold text-green-600">
-                  {pets.reduce((sum, pet) => sum + (pet.medicalHistory?.vaccinations?.length || 0), 0)}
+                  {loading ? "..." : pets.reduce((sum, pet) => sum + (pet.medicalHistory?.vaccinations?.length || 0), 0)}
                 </div>
                 <div className="text-gray-600">Vaccinations</div>
               </div>
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
                 <div className="text-3xl font-bold text-purple-600">
-                  {pets.filter(pet => 
+                  {loading ? "..." : pets.filter(pet => 
                     pet.medicalHistory?.medications?.some(med => 
                       !med.endDate || new Date(med.endDate) > new Date()
                     )
@@ -180,12 +83,41 @@ export default function Home() {
             </div>
 
             {/* Pet Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {pets.map((pet) => (
-                <PetCard key={pet._id} pet={pet as any} />
-              ))}
-              <AddPetCard onAddPet={handleAddPet} />
-            </div>
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 animate-pulse">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+                      <div>
+                        <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+                        <div className="h-3 bg-gray-300 rounded w-32"></div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-3 bg-gray-300 rounded"></div>
+                      <div className="h-3 bg-gray-300 rounded w-3/4"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : pets.length === 0 ? (
+              <div className="text-center py-12">
+                <PawPrint size={64} className="mx-auto text-gray-300 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No pets yet</h3>
+                <p className="text-gray-500 mb-6">
+                  Get started by adding your first pet to begin tracking their health and appointments.
+                </p>
+                <AddPetCard />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pets.map((pet) => (
+                  <PetCard key={pet._id} pet={pet as any} />
+                ))}
+                <AddPetCard />
+              </div>
+            )}
 
             {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">

@@ -9,6 +9,7 @@ export interface Pet extends Document {
     weight?: number;
     color?: string;
     microchipId?: string;
+    birthday?: Date;
     dateAdded: Date;
     owner: string; // User's email or ID
     medicalHistory: {
@@ -44,6 +45,7 @@ const PetSchema = new Schema<Pet>(
         weight: { type: Number },
         color: { type: String },
         microchipId: { type: String },
+        birthday: { type: Date },
         dateAdded: { type: Date, default: Date.now },
         owner: { type: String, required: true },
         medicalHistory: {

@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { authConfig } from "@/lib/auth";
 import connectDB from "@/lib/mongoose";
 import Pet from "@/models/Pet";
 
 // GET /api/pets - Get all pets for the authenticated user
 export async function GET(request: NextRequest) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authConfig);
         if (!session?.user?.email) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -14,7 +15,6 @@ export async function GET(request: NextRequest) {
         await connectDB();
 
         const pets = await Pet.find({ owner: session.user.email })
-            .select('_id name species breed age')
             .sort({ name: 1 });
 
         return NextResponse.json(pets);
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 // POST /api/pets - Create a new pet
 export async function POST(request: NextRequest) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authConfig);
         if (!session?.user?.email) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         await connectDB();
 
         const body = await request.json();
-        const { name, species, breed, age, weight, color, microchipId, notes } = body;
+        const { name, species, breed, age, weight, color, microchipId, birthday, notes } = body;
 
         // Validate required fields
         if (!name || !species || age === undefined) {
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
             weight,
             color,
             microchipId,
+            birthday: birthday ? new Date(birthday) : undefined,
             owner: session.user.email,
             medicalHistory: {
                 vaccinations: [],
