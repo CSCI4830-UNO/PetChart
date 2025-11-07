@@ -1,19 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pet } from "@/models/Pet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Heart, Calendar, Weight, Palette, Stethoscope } from "lucide-react";
+import { Heart, Calendar, Weight, Palette, Stethoscope } from "lucide-react";
 
 interface PetCardProps {
     pet: Pet;
 }
 
 export function PetCard({ pet }: PetCardProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
     const router = useRouter();
 
     const getSpeciesEmoji = (species: string) => {
@@ -43,11 +41,8 @@ export function PetCard({ pet }: PetCardProps) {
     };
 
     return (
-        <Card className="transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer">
-            <CardHeader 
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="pb-3"
-            >
+        <Card className="group relative transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+            <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="text-3xl">
@@ -66,131 +61,133 @@ export function PetCard({ pet }: PetCardProps) {
                         <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                             {pet.species}
                         </Badge>
-                        {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>
                 </div>
             </CardHeader>
 
-            {isExpanded && (
-                <CardContent className="pt-0 space-y-4 animate-in slide-in-from-top-5 duration-300">
-                    {/* Basic Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <h4 className="font-semibold text-gray-700 flex items-center gap-2">
-                                <Heart size={16} className="text-red-500" />
-                                Basic Information
-                            </h4>
-                            <div className="space-y-1 text-sm">
-                                {pet.weight && (
-                                    <div className="flex items-center gap-2">
-                                        <Weight size={14} />
-                                        <span>Weight: {pet.weight} lbs</span>
-                                    </div>
-                                )}
-                                {pet.color && (
-                                    <div className="flex items-center gap-2">
-                                        <Palette size={14} />
-                                        <span>Color: {pet.color}</span>
-                                    </div>
-                                )}
-                                {pet.microchipId && (
-                                    <div className="flex items-center gap-2">
-                                        <Calendar size={14} />
-                                        <span>Microchip: {pet.microchipId}</span>
-                                    </div>
-                                )}
+            <CardContent className="pt-0 space-y-4">
+                {/* Basic Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+                            <Heart size={16} className="text-red-500" />
+                            Basic Information
+                        </h4>
+                        <div className="space-y-1 text-sm">
+                            {pet.weight && (
+                                <div className="flex items-center gap-2">
+                                    <Weight size={14} />
+                                    <span>Weight: {pet.weight} lbs</span>
+                                </div>
+                            )}
+                            {pet.color && (
+                                <div className="flex items-center gap-2">
+                                    <Palette size={14} />
+                                    <span>Color: {pet.color}</span>
+                                </div>
+                            )}
+                            {pet.microchipId && (
                                 <div className="flex items-center gap-2">
                                     <Calendar size={14} />
-                                    <span>Added: {formatDate(pet.dateAdded)}</span>
+                                    <span>Microchip: {pet.microchipId}</span>
                                 </div>
-                            </div>
-                        </div>
-
-                        {/* Medical History Summary */}
-                        <div className="space-y-2">
-                            <h4 className="font-semibold text-gray-700 flex items-center gap-2">
-                                <Stethoscope size={16} className="text-green-500" />
-                                Medical Summary
-                            </h4>
-                            <div className="space-y-1 text-sm">
-                                <div>
-                                    Vaccinations: {pet.medicalHistory?.vaccinations?.length || 0}
-                                </div>
-                                <div>
-                                    Treatments: {pet.medicalHistory?.treatments?.length || 0}
-                                </div>
-                                <div>
-                                    Medications: {pet.medicalHistory?.medications?.length || 0}
-                                </div>
+                            )}
+                            <div className="flex items-center gap-2">
+                                <Calendar size={14} />
+                                <span>Added: {formatDate(pet.dateAdded)}</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Recent Vaccinations */}
-                    {pet.medicalHistory?.vaccinations && pet.medicalHistory.vaccinations.length > 0 && (
-                        <div>
-                            <h4 className="font-semibold text-gray-700 mb-2">Recent Vaccinations</h4>
-                            <div className="space-y-1">
-                                {pet.medicalHistory.vaccinations.slice(-3).map((vaccination, index) => (
-                                    <div key={index} className="text-sm bg-green-50 p-2 rounded border border-green-200">
-                                        <span className="font-medium">{vaccination.vaccine}</span>
-                                        <span className="text-gray-600 ml-2">({formatDate(vaccination.date)})</span>
-                                        {vaccination.nextDue && (
-                                            <span className="text-orange-600 ml-2">
-                                                Next due: {formatDate(vaccination.nextDue)}
-                                            </span>
-                                        )}
-                                    </div>
-                                ))}
+                    {/* Medical History Summary */}
+                    <div className="space-y-2">
+                        <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+                            <Stethoscope size={16} className="text-green-500" />
+                            Medical Summary
+                        </h4>
+                        <div className="space-y-1 text-sm">
+                            <div>
+                                Vaccinations: {pet.medicalHistory?.vaccinations?.length || 0}
+                            </div>
+                            <div>
+                                Treatments: {pet.medicalHistory?.treatments?.length || 0}
+                            </div>
+                            <div>
+                                Medications: {pet.medicalHistory?.medications?.length || 0}
                             </div>
                         </div>
-                    )}
+                    </div>
+                </div>
 
-                    {/* Current Medications */}
-                    {pet.medicalHistory?.medications && 
-                     pet.medicalHistory.medications.filter(med => !med.endDate || new Date(med.endDate) > new Date()).length > 0 && (
-                        <div>
-                            <h4 className="font-semibold text-gray-700 mb-2">Current Medications</h4>
-                            <div className="space-y-1">
-                                {pet.medicalHistory.medications
-                                    .filter(med => !med.endDate || new Date(med.endDate) > new Date())
-                                    .map((medication, index) => (
-                                    <div key={index} className="text-sm bg-blue-50 p-2 rounded border border-blue-200">
-                                        <span className="font-medium">{medication.medication}</span>
-                                        <span className="text-gray-600 ml-2">({medication.dosage})</span>
-                                    </div>
-                                ))}
-                            </div>
+                {/* Recent Vaccinations */}
+                {pet.medicalHistory?.vaccinations && pet.medicalHistory.vaccinations.length > 0 && (
+                    <div>
+                        <h4 className="font-semibold text-gray-700 mb-2">Recent Vaccinations</h4>
+                        <div className="space-y-1">
+                            {pet.medicalHistory.vaccinations.slice(-2).map((vaccination, index) => (
+                                <div key={index} className="text-sm bg-green-50 p-2 rounded border border-green-200">
+                                    <span className="font-medium">{vaccination.vaccine}</span>
+                                    <span className="text-gray-600 ml-2">({formatDate(vaccination.date)})</span>
+                                    {vaccination.nextDue && (
+                                        <span className="text-orange-600 ml-2">
+                                            Next due: {formatDate(vaccination.nextDue)}
+                                        </span>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Notes */}
-                    {pet.notes && (
-                        <div>
-                            <h4 className="font-semibold text-gray-700 mb-2">Notes</h4>
-                            <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded border">
-                                {pet.notes}
-                            </p>
+                {/* Current Medications */}
+                {pet.medicalHistory?.medications && 
+                 pet.medicalHistory.medications.filter(med => !med.endDate || new Date(med.endDate) > new Date()).length > 0 && (
+                    <div>
+                        <h4 className="font-semibold text-gray-700 mb-2">Current Medications</h4>
+                        <div className="space-y-1">
+                            {pet.medicalHistory.medications
+                                .filter(med => !med.endDate || new Date(med.endDate) > new Date())
+                                .slice(0, 2)
+                                .map((medication, index) => (
+                                <div key={index} className="text-sm bg-blue-50 p-2 rounded border border-blue-200">
+                                    <span className="font-medium">{medication.medication}</span>
+                                    <span className="text-gray-600 ml-2">({medication.dosage})</span>
+                                </div>
+                            ))}
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    <div className="flex gap-2 pt-2">
+                {/* Notes */}
+                {pet.notes && (
+                    <div>
+                        <h4 className="font-semibold text-gray-700 mb-2">Notes</h4>
+                        <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded border line-clamp-3">
+                            {pet.notes}
+                        </p>
+                    </div>
+                )}
+
+                {/* Action buttons that appear on hover */}
+                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="flex gap-2 bg-white/90 backdrop-blur-sm p-3 rounded-lg border shadow-lg">
                         <Button 
                             variant="outline" 
                             size="sm"
                             onClick={() => router.push(`/pets/edit/${pet._id}`)}
+                            className="flex-1"
                         >
                             Edit Pet
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="flex-1">
                             Add Record
                         </Button>
-                        <Button variant="outline" size="sm">
-                            View Full History
+                        <Button variant="outline" size="sm" className="flex-1">
+                            View History
                         </Button>
                     </div>
-                </CardContent>
-            )}
+                </div>
+            </CardContent>
         </Card>
     );
 }

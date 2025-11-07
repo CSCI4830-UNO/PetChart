@@ -127,7 +127,7 @@ export default function Home() {
                   onClick={() => router.push("/appointments/schedule")}
                   className="p-4 text-center bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
                 >
-                  <div className="text-2xl mb-2">�</div>
+                  <div className="text-2xl mb-2">🗓️</div>
                   <div className="text-sm font-medium text-blue-900">Schedule Appointment</div>
                 </button>
                 <button 
