@@ -137,7 +137,7 @@ export default function Home() {
                   <div className="text-2xl mb-2">🏥</div>
                   <div className="text-sm font-medium text-green-900">View Appointments</div>
                 </button>
-                <button className="p-4 text-center bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                <button onClick={() => router.push('/medications/add')} className="p-4 text-center bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
                   <div className="text-2xl mb-2">💊</div>
                   <div className="text-sm font-medium text-purple-900">Add Medication</div>
                 </button>

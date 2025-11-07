@@ -193,7 +193,7 @@ export default function AddPet() {
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Choose species" />
                                                 </SelectTrigger>
-                                                <SelectContent>
+                                                <SelectContent className="bg-white">
                                                     <SelectItem value="Dog">🐕 Dog</SelectItem>
                                                     <SelectItem value="Cat">🐱 Cat</SelectItem>
                                                     <SelectItem value="Bird">🐦 Bird</SelectItem>
