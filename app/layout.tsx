@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./api/auth/[...nextauth]/providers";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "PetChart",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body>{children}</body>
+        <body>
+          {children}
+          <Toaster position="top-right" />
+        </body>
       </Providers>
     </html>
   );
