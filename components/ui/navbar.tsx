@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PawPrint } from "lucide-react";
+import SignOutBtn from "../SignOutBtn";
+import { useSession } from "next-auth/react";
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -14,6 +16,8 @@ export default function NavBar() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  const { data: session } = useSession();
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/60 border-b border-gray-200 transition-all duration-500">
@@ -50,14 +54,22 @@ export default function NavBar() {
           ))}
         </div>
 
-        {/* Sign In button */}
-        <Link
-          href="/api/auth/signin"
-          className="text-sm font-medium text-slate-900 border border-slate-300 px-3.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors"
-        >
-          Sign In
-        </Link>
+        {/* Sign In / Sign Out */}
+        <div className="flex items-center gap-3">
+          {/* Show Sign In when there's no session, otherwise show Sign Out */}
+          {session?.user ? (
+            <SignOutBtn />
+          ) : (
+            <Link
+              href="/api/auth/signin"
+              className="text-sm font-medium text-slate-900 border border-slate-300 px-3.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );
 }
+

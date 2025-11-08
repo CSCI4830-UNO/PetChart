@@ -1,6 +1,7 @@
 "use client";
 
 import { SignInBtn } from "@/components/signInBtn";
+import SignOutBtn from "@/components/SignOutBtn";
 import { PetCard } from "@/components/PetCard";
 import { AddPetCard } from "@/components/AddPetCard";
 import { Heart, PawPrint } from "lucide-react";
@@ -124,7 +125,7 @@ export default function Home() {
                 <p className="text-sm text-gray-600">Welcome back,</p>
                 <p className="font-medium text-gray-900">{session.user?.name}</p>
               </div>
-              <SignInBtn />
+              <SignOutBtn />
             </div>
           </div>
         </div>
