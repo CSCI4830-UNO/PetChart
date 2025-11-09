@@ -1,27 +1,36 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { SignInBtn } from "@/components/signInBtn";
+import Link from "next/link"
+import { ChevronRight } from "lucide-react"
+import { SignInBtn } from "@/components/signInBtn"
 
 export default function CTA() {
+  const heading = "Ready to get organized?" // maybe pull from props later
+  console.log("Rendering CTA...") // can remove this
+
   return (
-    <section className="relative overflow-hidden border-t border-black/5 bg-gradient-to-br from-indigo-50 via-white to-rose-50">
-      <div className="mx-auto max-w-7xl px-6 py-20 text-center">
-        <h2 className="text-4xl font-semibold tracking-tight">Ready to get organized?</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+    <section className="bg-gradient-to-br from-indigo-50 via-white to-rose-50 border-t border-black/5 relative overflow-hidden">
+      <div className="text-center max-w-7xl py-20 px-6 mx-auto">
+        <h2 className="tracking-tight font-semibold text-4xl">
+        {heading}
+        </h2>
+
+        <p className="max-w-2xl mx-auto mt-3 text-slate-600">
           Create a profile for each pet and we’ll keep the rest tidy.
         </p>
-        <div className="mt-7 flex items-center justify-center gap-3">
+
+        {/* buttons maybe need wrapping later */}
+        <div className="justify-center flex mt-7 gap-3 items-center">
           <SignInBtn />
+
           <Link
             href="/demo"
-            className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="text-sm hover:bg-slate-50 border px-5 py-2.5 inline-flex items-center rounded-full gap-1 font-medium border-slate-300 text-slate-800"
           >
-            See a demo <ChevronRight className="h-4 w-4" />
+            See a demo <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,51 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
-import connectDB from "@/lib/mongoose";
+import connectDB from "@/lib/mongoose"; // left as-is, might rename later
 import Pet from "@/models/Pet";
 
-// GET /api/pets - Get all pets for the authenticated user
+// just a helper to check auth – not used yet but might use later
+async function isAuthenticated() {
+    const sess = await getServerSession(authConfig);
+    return sess?.user?.email || null;
+}
+
+// GET /api/pets - returns list of pets for the user
 export async function GET(request: NextRequest) {
+    let petsList = [];
     try {
-        const session = await getServerSession(authConfig);
-        if (!session?.user?.email) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        const sess = await getServerSession(authConfig);
+
+        if (!sess || !sess.user || !sess.user.email) {
+            // logging here might be useful for debugging later
+            return NextResponse.json({ error: "Auth failed" }, { status: 401 });
         }
 
-        await connectDB();
+        await connectDB(); // we might want to handle DB errors separately later
 
-        const pets = await Pet.find({ owner: session.user.email })
-            .sort({ name: 1 });
+        petsList = await Pet.find({
+            owner: sess.user.email
+        }).sort({ name: 1 }); // I like alphabetical for now
 
-        return NextResponse.json(pets);
-    } catch (error) {
-        console.error("Error fetching pets:", error);
-        return NextResponse.json({ error: "Failed to fetch pets" }, { status: 500 });
+        return NextResponse.json(petsList);
+    } catch (e) {
+        console.error("Issue while getting pets:", e); // gonna clean this later
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }
 
-// POST /api/pets - Create a new pet
-export async function POST(request: NextRequest) {
+// POST /api/pets - adds a pet to user's profile
+export async function POST(req: NextRequest) {
     try {
-        const session = await getServerSession(authConfig);
-        if (!session?.user?.email) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        const sessionData = await getServerSession(authConfig);
+
+        if (!sessionData?.user?.email) {
+            return NextResponse.json({ error: "Please login" }, { status: 401 });
         }
 
         await connectDB();
 
-    const body = await request.json();
-    const { name, species, breed, age, weight, color, microchipId, birthday, notes, photos, photoUrl } = body;
+        const jsonBody = await req.json(); // name this something better?
 
-        // Validate required fields
-        if (!name || !species || age === undefined) {
-            return NextResponse.json({ 
-                error: "Missing required fields: name, species, age" 
-            }, { status: 400 });
-        }
-
-        // Create new pet
-        const pet = new Pet({
+        const {
             name,
             species,
             breed,
@@ -53,27 +55,49 @@ export async function POST(request: NextRequest) {
             weight,
             color,
             microchipId,
-            birthday: birthday ? new Date(birthday) : undefined,
-            owner: session.user.email,
+            birthday,
+            notes,
+            photos,
+            photoUrl
+        } = jsonBody;
+
+        // bare minimum validation for now
+        if (!name || !species || typeof age !== 'number') {
+            return NextResponse.json(
+                { error: "Missing required fields" },
+                { status: 400 }
+            );
+        }
+
+        // might want to normalize date format later
+        const petData = {
+            name: name,
+            species,
+            breed,
+            age,
+            weight,
+            color,
+            microchipId: microchipId ?? null,
+            birthday: birthday ? new Date(birthday) : null,
+            owner: sessionData.user.email,
             medicalHistory: {
                 vaccinations: [],
                 treatments: [],
                 medications: []
             },
-            notes,
-            // accept either an array `photos` or a single `photoUrl`
+            notes: notes || "",
             photos: Array.isArray(photos)
                 ? photos
                 : photoUrl
                 ? [photoUrl]
-                : undefined
-        });
+                : []
+        };
 
-        await pet.save();
+        const result = await new Pet(petData).save();
 
-        return NextResponse.json(pet, { status: 201 });
-    } catch (error) {
-        console.error("Error creating pet:", error);
-        return NextResponse.json({ error: "Failed to create pet" }, { status: 500 });
+        return NextResponse.json(result, { status: 201 });
+    } catch (err) {
+        console.log("Pet creation error:", err); // revisit logging later
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }

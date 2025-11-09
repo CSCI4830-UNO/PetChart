@@ -1,4 +1,3 @@
-// app/api/images/[id]/route.ts
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/mongo";

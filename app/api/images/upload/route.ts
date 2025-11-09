@@ -55,7 +55,7 @@ export async function POST(req: Request) {
             deletedPrevious = true;
             console.log("Deleted previous upload:", prevIdStr);
           } catch (err) {
-            // log delete errors (file might not exist or invalid id)
+            // log delete errors
             console.warn("Could not delete previous upload:", prevIdStr, err);
           }
         } else {
