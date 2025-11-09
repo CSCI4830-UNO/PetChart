@@ -3,11 +3,11 @@
 import React from "react";
 import Image from "next/image";
 
-// NOTE: This component handles uploading a photo and previewing it.
+// Handles photo uploads and shows a preview
 export default function UploadPhotoMongo({
-  value,       // current file ID or URL
-  onChange,    // callback when URL/ID changes
-  onUploading, // callback for upload state
+  value,       // current image URL or ID
+  onChange,    // new image uploaded or removed
+  onUploading, // informs on the current upload state
   label = "Pet Photo",
 }: {
   value?: string | null;
@@ -17,73 +17,70 @@ export default function UploadPhotoMongo({
 }) {
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState<string | null>(
-    value
-      ? (value.startsWith("/api/") ? value : `/api/images/${value}`)
-      : null
+    value ? (value.startsWith("/api/") ? value : `/api/images/${value}`) : null
   );
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // helper to extract an ID from URL or path
+  // Extract file ID from URL
   function extractId(raw: string): string {
     try {
-      const u = new URL(raw, location.origin);
-      const parts = u.pathname.split("/").filter(Boolean);
-      return parts[parts.length - 1] || raw;
+      const url = new URL(raw, location.origin);
+      const segments = url.pathname.split("/").filter(Boolean);
+      return segments.at(-1) || raw;
     } catch {
       const cleaned = raw.split(/[?#]/)[0];
       const parts = cleaned.split("/").filter(Boolean);
-      return parts[parts.length - 1] || cleaned;
+      return parts.at(-1) || cleaned;
     }
   }
 
+  // Called when a file is selected
   function handlePick(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    if (!f.type.startsWith("image/")) {
+    const picked = e.target.files?.[0];
+    if (!picked) return;
+
+    if (!picked.type.startsWith("image/")) {
       setError("Please select an image file.");
       return;
     }
-    if (f.size > 8 * 1024 * 1024) {
+    if (picked.size > 8 * 1024 * 1024) {
       setError("Maximum size is 8MB.");
       return;
     }
+
     setError(null);
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
-    uploadFile(f);
+    setFile(picked);
+    setPreview(URL.createObjectURL(picked));
+    uploadFile(picked); // auto-upload after selection
   }
 
-  async function uploadFile(f: File) {
+  // Uploads image to server
+  async function uploadFile(file: File) {
     setLoading(true);
     onUploading?.(true);
 
     try {
-      const form = new FormData();
-      form.append("file", f);
-      form.append("filename", f.name);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("filename", file.name);
 
       if (value) {
-        const prev = extractId(value);
-        form.append("previousId", prev);
+        formData.append("previousId", extractId(value));
       }
-
-      // debugging
-      console.log("Uploading: filename=", f.name, "prev=", value);
 
       const res = await fetch("/api/images/upload", {
         method: "POST",
-        body: form,
+        body: formData,
       });
-      const data = await res.json();
 
-      console.log("Response data:", data);
+      const data = await res.json();
 
       if (!res.ok) throw new Error(data?.error || "Upload failed");
       setPreview(data.url);
       onChange?.(data.url);
     } catch (err: any) {
-      console.error("Error in upload:", err);
+      console.error("Upload error:", err);
       setError(err.message || "Upload failed");
       onChange?.(null);
     } finally {
@@ -92,6 +89,7 @@ export default function UploadPhotoMongo({
     }
   }
 
+  // Clears current selection
   function handleRemove() {
     setFile(null);
     setPreview(null);
@@ -102,6 +100,7 @@ export default function UploadPhotoMongo({
     <div className="space-y-3">
       <div className="text-sm font-medium text-slate-900">{label}</div>
 
+      // upload box component
       <label className="flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center hover:bg-slate-50">
         <div className="space-y-2">
           <div className="text-2xl">📷</div>
@@ -112,6 +111,7 @@ export default function UploadPhotoMongo({
         </div>
       </label>
 
+      // preview and buttons components
       {preview && (
         <div className="flex items-center gap-4">
           <div className="relative h-24 w-24 overflow-hidden rounded-lg ring-1 ring-slate-200">
@@ -136,9 +136,12 @@ export default function UploadPhotoMongo({
         </div>
       )}
 
+      // Help text
       {!preview && (
         <div className="text-xs text-slate-500">Allowed: PNG, JPG, HEIC up to 8MB.</div>
       )}
+
+      // Error message
       {error && <div className="text-xs text-rose-600">{error}</div>}
     </div>
   );
