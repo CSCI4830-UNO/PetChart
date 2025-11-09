@@ -41,8 +41,28 @@ export default function UploadPhotoMongo({
       const fd = new FormData();
       fd.append("file", file);
       fd.append("filename", file.name);
-      const res = await fetch("/api/images/upload", { method: "POST", body: fd });
-      const data = await res.json();
+      // include current value (previous file id or url) so server can remove old file
+      if (value) {
+        // normalize previous id robustly: handle absolute URLs, relative URLs and raw ids
+        let prevId: string | null = null;
+        try {
+          // if value is an absolute URL (http(s)://...), use URL to get pathname
+          const u = new URL(value, location.origin);
+          const parts = u.pathname.split("/").filter(Boolean);
+          prevId = parts.length ? parts[parts.length - 1] : null;
+        } catch (e) {
+          // not a valid absolute URL, treat as path or id
+          const cleaned = value.split(/[?#]/)[0]; // remove query/hash
+          const parts = cleaned.split("/").filter(Boolean);
+          prevId = parts.length ? parts[parts.length - 1] : cleaned;
+        }
+        if (prevId) fd.append("previousId", prevId);
+      }
+  // debug: log that we're about to POST (helps confirm request is sent)
+  console.log("Uploading file to /api/images/upload", { filename: file.name, previousId: value });
+  const res = await fetch("/api/images/upload", { method: "POST", body: fd });
+  const data = await res.json();
+  console.log("Upload response:", data, "status:", res.status);
       if (!res.ok) throw new Error(data?.error || "Upload failed");
       setPreview(data.url);
       onChange?.(data.url);
@@ -63,8 +83,23 @@ export default function UploadPhotoMongo({
       const fd = new FormData();
       fd.append("file", f);
       fd.append("filename", f.name);
-      const res = await fetch("/api/images/upload", { method: "POST", body: fd });
-      const data = await res.json();
+      if (value) {
+        let prevId: string | null = null;
+        try {
+          const u = new URL(value, location.origin);
+          const parts = u.pathname.split("/").filter(Boolean);
+          prevId = parts.length ? parts[parts.length - 1] : null;
+        } catch (e) {
+          const cleaned = value.split(/[?#]/)[0];
+          const parts = cleaned.split("/").filter(Boolean);
+          prevId = parts.length ? parts[parts.length - 1] : cleaned;
+        }
+        if (prevId) fd.append("previousId", prevId);
+      }
+  console.log("Uploading file to /api/images/upload", { filename: f.name, previousId: value });
+  const res = await fetch("/api/images/upload", { method: "POST", body: fd });
+  const data = await res.json();
+  console.log("Upload response:", data, "status:", res.status);
       if (!res.ok) throw new Error(data?.error || "Upload failed");
       setPreview(data.url);
       onChange?.(data.url);

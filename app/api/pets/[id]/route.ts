@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
 import dbConnect from "@/lib/mongoose";
+import { getDb } from "@/lib/mongo";
 import Pet from "@/models/Pet";
 import { Types } from "mongoose";
 
@@ -103,7 +104,10 @@ export async function PUT(
             }
         }
 
-        // Find and update the pet (include photos if present)
+    // Find existing pet so we can remove any orphaned GridFS files
+    const existingPet = await Pet.findOne({ _id: id, owner: session.user.email });
+
+    // Find and update the pet (include photos if present)
         const updatePayload: any = {
             name: name.trim(),
             species: species.trim(),
@@ -121,6 +125,51 @@ export async function PUT(
             updatePayload.photos = photos;
         } else if (photoUrl) {
             updatePayload.photos = [photoUrl];
+        }
+
+        // Before updating, compute which photo ids were removed and delete them from GridFS
+        try {
+            const oldPhotos: string[] = Array.isArray(existingPet?.photos) ? existingPet!.photos : (existingPet?.photos ? [existingPet!.photos as any].flat() : []);
+            const newPhotos: string[] = Array.isArray(updatePayload.photos) ? updatePayload.photos : (updatePayload.photos ? [updatePayload.photos] : []);
+
+            const normalizeId = (val: string) => {
+                if (!val) return undefined;
+                try {
+                    // handle full or relative URLs like /api/images/<id> or https://host/api/images/<id>
+                    const u = new URL(val, "http://localhost");
+                    const seg = u.pathname.split("/").filter(Boolean).pop();
+                    return seg || undefined;
+                } catch {
+                    // not a URL, assume it's an id string
+                    return val;
+                }
+            };
+
+            const oldIds = oldPhotos.map(p => normalizeId(p)).filter(Boolean) as string[];
+            const newIds = newPhotos.map(p => normalizeId(p)).filter(Boolean) as string[];
+
+            const removed = oldIds.filter(o => !newIds.includes(o));
+            if (removed.length > 0) {
+                try {
+                    const { bucket } = await getDb();
+                    for (const rid of removed) {
+                        try {
+                            if (Types.ObjectId.isValid(rid)) {
+                                await bucket.delete(new (require("mongodb").ObjectId)(rid));
+                                console.log("Deleted orphaned GridFS file:", rid);
+                            } else {
+                                console.log("Skipped deleting non-ObjectId photo id:", rid);
+                            }
+                        } catch (err) {
+                            console.warn("Failed to delete GridFS file:", rid, err);
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Error while connecting to GridFS for cleanup:", err);
+                }
+            }
+        } catch (err) {
+            console.warn("Error during photo cleanup preparation:", err);
         }
 
         // Find and update the pet
