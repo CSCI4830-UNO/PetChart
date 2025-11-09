@@ -39,7 +39,6 @@ export default function NavBar() {
             { label: "Privacy", href: "#privacy" },
             { label: "Pricing", href: "/pricing" },
             { label: "FAQ", href: "/faq" },
-            { label: "Docs", href: "/docs" },
           ].map((link) => (
             <Link
               key={link.label}
