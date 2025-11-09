@@ -7,17 +7,10 @@ export default function SignOutBtn() {
   const handleSignOut = async () => {
     // Sign out from the app (NextAuth) without redirecting immediately
     await signOut({ redirect: false })
-
-    // Open Google's logout page in a new tab to sign the user out of Google services
-    // This cannot be done via fetch due to cross-origin policies, so we open a new tab/window.
-    try {
-      window.open("https://accounts.google.com/Logout", "_blank", "noopener,noreferrer")
-    } catch (e) {
-      // ignore if popup is blocked; the local sign-out already occurred
-      console.warn("Could not open Google logout page", e)
-    }
-
-    // Finally redirect the user back to the homepage (or change as desired)
+    // Do not open a new tab for Google's logout (prevents account-chooser from opening)
+    // Just redirect the user in the same tab after local sign-out. If you need a
+    // full Google sign-out as well, consider adding an opt-in setting; for now
+    // avoid opening external pages to keep UX simple and avoid popup blocking.
     window.location.href = "/"
   }
 
