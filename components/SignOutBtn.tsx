@@ -12,7 +12,7 @@ export default function SignOutBtn() {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleSignOut}>
+    <Button variant="outline" size="medium" onClick={handleSignOut}>
       Sign out
     </Button>
   )

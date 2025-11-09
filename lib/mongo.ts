@@ -1,4 +1,3 @@
-// lib/mongo.ts  (server-only)
 import { MongoClient, Db, GridFSBucket } from "mongodb";
 
 const uri = process.env.MONGODB_URI!;
