@@ -34,8 +34,8 @@ export async function POST(request: NextRequest) {
 
         await connectDB();
 
-        const body = await request.json();
-        const { name, species, breed, age, weight, color, microchipId, birthday, notes } = body;
+    const body = await request.json();
+    const { name, species, breed, age, weight, color, microchipId, birthday, notes, photos, photoUrl } = body;
 
         // Validate required fields
         if (!name || !species || age === undefined) {
@@ -60,7 +60,13 @@ export async function POST(request: NextRequest) {
                 treatments: [],
                 medications: []
             },
-            notes
+            notes,
+            // accept either an array `photos` or a single `photoUrl`
+            photos: Array.isArray(photos)
+                ? photos
+                : photoUrl
+                ? [photoUrl]
+                : undefined
         });
 
         await pet.save();

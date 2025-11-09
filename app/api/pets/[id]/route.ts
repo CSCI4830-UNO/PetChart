@@ -64,8 +64,8 @@ export async function PUT(
             return NextResponse.json({ error: "Invalid pet ID" }, { status: 400 });
         }
 
-        const body = await request.json();
-        const { name, species, breed, age, weight, color, microchipId, birthday, notes } = body;
+    const body = await request.json();
+    const { name, species, breed, age, weight, color, microchipId, birthday, notes, photos, photoUrl } = body;
 
         // Validate required fields
         if (!name || !species) {
@@ -103,24 +103,33 @@ export async function PUT(
             }
         }
 
+        // Find and update the pet (include photos if present)
+        const updatePayload: any = {
+            name: name.trim(),
+            species: species.trim(),
+            breed: breed?.trim() || undefined,
+            age: age || 0,
+            weight: weight || undefined,
+            color: color?.trim() || undefined,
+            microchipId: microchipId?.trim() || undefined,
+            birthday: birthday || undefined,
+            notes: notes?.trim() || undefined,
+            updatedAt: new Date()
+        };
+
+        if (Array.isArray(photos)) {
+            updatePayload.photos = photos;
+        } else if (photoUrl) {
+            updatePayload.photos = [photoUrl];
+        }
+
         // Find and update the pet
         const updatedPet = await Pet.findOneAndUpdate(
             {
                 _id: id,
                 owner: session.user.email
             },
-            {
-                name: name.trim(),
-                species: species.trim(),
-                breed: breed?.trim() || undefined,
-                age: age || 0,
-                weight: weight || undefined,
-                color: color?.trim() || undefined,
-                microchipId: microchipId?.trim() || undefined,
-                birthday: birthday || undefined,
-                notes: notes?.trim() || undefined,
-                updatedAt: new Date()
-            },
+            updatePayload,
             { 
                 new: true, // Return updated document
                 runValidators: true // Run schema validators
