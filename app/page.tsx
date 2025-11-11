@@ -65,7 +65,7 @@ export default function HomePage() {
                 kicker="Vaccinations"
                 title="Never miss a booster again."
                 subhead="Auto schedules by species & age. Clear statuses: due, upcoming, overdue."
-                bulletA="Species-aware logic"
+                bulletA="Set a date, get reminders"
                 bulletB="Shareable records"
               />
             </motion.div>
@@ -76,8 +76,8 @@ export default function HomePage() {
                 kicker="Medications"
                 title="Reminders that actually help."
                 subhead="Plan monthly or short-term meds, and log doses easily."
-                bulletA="Flexible plans"
-                bulletB="Attachments + refill notes"
+                bulletA="Dosage tracking"
+                bulletB="Attachments + refill n"
                 imageLeft
               />
             </motion.div>
@@ -88,8 +88,8 @@ export default function HomePage() {
                 kicker="Appointments"
                 title="A timeline you can trust."
                 subhead="Wellness checks, labs, and procedures—all trackable & searchable."
-                bulletA="Clinic + outcome"
-                bulletB="Upload summaries"
+                bulletA="Vet visit logs"
+                bulletB="Upcoming appointment reminders"
               />
             </motion.div>
           </motion.section>
