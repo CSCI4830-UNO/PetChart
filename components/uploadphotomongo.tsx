@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 
-// Handles photo uploads and shows a preview
+// this function is used to upload a photo to the server and manage its state
 export default function UploadPhotoMongo({
   value,       // current image URL or ID
   onChange,    // new image uploaded or removed
@@ -22,7 +22,7 @@ export default function UploadPhotoMongo({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Extract file ID from URL
+  // extracts file ID from URL
   function extractId(raw: string): string {
     try {
       const url = new URL(raw, location.origin);
@@ -35,7 +35,7 @@ export default function UploadPhotoMongo({
     }
   }
 
-  // Called when a file is selected
+  // this is called when the user picks a file
   function handlePick(e: React.ChangeEvent<HTMLInputElement>) {
     const picked = e.target.files?.[0];
     if (!picked) return;
@@ -55,7 +55,7 @@ export default function UploadPhotoMongo({
     uploadFile(picked); // auto-upload after selection
   }
 
-  // Uploads image to server
+  // uploads the file to the server
   async function uploadFile(file: File) {
     setLoading(true);
     onUploading?.(true);
@@ -89,18 +89,18 @@ export default function UploadPhotoMongo({
     }
   }
 
-  // Clears current selection
+  // clears current selection
   function handleRemove() {
     setFile(null);
     setPreview(null);
     onChange?.(null);
   }
 
+  // renders the main component
   return (
     <div className="space-y-3">
       <div className="text-sm font-medium text-slate-900">{label}</div>
 
-      // upload box component
       <label className="flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center hover:bg-slate-50">
         <div className="space-y-2">
           <div className="text-2xl">📷</div>
@@ -111,38 +111,8 @@ export default function UploadPhotoMongo({
         </div>
       </label>
 
-      // preview and buttons components
-      {preview && (
-        <div className="flex items-center gap-4">
-          <div className="relative h-24 w-24 overflow-hidden rounded-lg ring-1 ring-slate-200">
-            <Image src={preview} alt="Preview" fill className="object-cover" unoptimized />
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => file && uploadFile(file)}
-              disabled={loading}
-              className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
-            >
-              {loading ? "Uploading…" : "Upload"}
-            </button>
-            <button
-              onClick={handleRemove}
-              disabled={loading}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-50"
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      )}
-
-      // Help text
-      {!preview && (
-        <div className="text-xs text-slate-500">Allowed: PNG, JPG, HEIC up to 8MB.</div>
-      )}
-
-      // Error message
       {error && <div className="text-xs text-rose-600">{error}</div>}
+      
     </div>
   );
 }

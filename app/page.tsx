@@ -1,13 +1,13 @@
 "use client";
 
-import { SignInBtn } from "@/components/signInBtn";
 import SignOutBtn from "@/components/SignOutBtn";
 import { PetCard } from "@/components/PetCard";
 import { AddPetCard } from "@/components/AddPetCard";
-import { Heart, PawPrint } from "lucide-react";
+import { Heart} from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { usePets } from "@/hooks/usePets";
+import Image from "next/image";
 
 // Marketing stuff
 import NavBar from "@/components/ui/navbar";
@@ -57,11 +57,14 @@ export default function HomePage() {
             className="mx-auto max-w-7xl px-6 py-20"
             variants={fadeInUp(0.15)}
           >
+            {/* Feature rows */}
+            {/* You can add more / edit the images and cards here */}
             <motion.div variants={fadeInUp(0.18)}>
               <FeatureRow
+                image="/icons/schedule.png"
                 kicker="Vaccinations"
                 title="Never miss a booster again."
-                copy="Auto schedules by species & age. Clear statuses: due, upcoming, overdue."
+                subhead="Auto schedules by species & age. Clear statuses: due, upcoming, overdue."
                 bulletA="Species-aware logic"
                 bulletB="Shareable records"
               />
@@ -69,9 +72,10 @@ export default function HomePage() {
 
             <motion.div variants={fadeInUp(0.22)}>
               <FeatureRow
+                image="/icons/medication.png"
                 kicker="Medications"
                 title="Reminders that actually help."
-                copy="Plan monthly or short-term meds, and log doses easily."
+                subhead="Plan monthly or short-term meds, and log doses easily."
                 bulletA="Flexible plans"
                 bulletB="Attachments + refill notes"
                 imageLeft
@@ -80,15 +84,17 @@ export default function HomePage() {
 
             <motion.div variants={fadeInUp(0.26)}>
               <FeatureRow
+              image="/icons/appointments.png"
                 kicker="Appointments"
                 title="A timeline you can trust."
-                copy="Wellness checks, labs, and procedures—all trackable & searchable."
+                subhead="Wellness checks, labs, and procedures—all trackable & searchable."
                 bulletA="Clinic + outcome"
                 bulletB="Upload summaries"
               />
             </motion.div>
           </motion.section>
 
+          {/* Privacy card */}
           <motion.div variants={fadeInUp(0.3)}>
             <PrivacyCard />
           </motion.div>
@@ -108,8 +114,8 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <PawPrint size={24} className="text-white" />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+                <Image src="/icons/favicon.ico" alt="Icon" width={100} height={100} />
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">PetChart</h1>
@@ -193,7 +199,7 @@ export default function HomePage() {
             </div>
           ) : pets.length === 0 ? (
             <div className="text-center py-12">
-              <PawPrint size={64} className="mx-auto text-gray-300 mb-4" />
+              <Image src="/icons/favicon.ico" alt="Calendar Icon" width={100} height={100} />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No pets yet</h3>
               <p className="text-gray-500 mb-6">
                 Start by adding your first pet and begin tracking their care.

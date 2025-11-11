@@ -22,13 +22,6 @@ export default function CTA() {
         {/* buttons maybe need wrapping later */}
         <div className="justify-center flex mt-7 gap-3 items-center">
           <SignInBtn />
-
-          <Link
-            href="/demo"
-            className="text-sm hover:bg-slate-50 border px-5 py-2.5 inline-flex items-center rounded-full gap-1 font-medium border-slate-300 text-slate-800"
-          >
-            See a demo <ChevronRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </section>

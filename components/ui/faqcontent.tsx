@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// TODO: maybe split into smaller FAQItem component later?
+// Data for the current and future FAQ entries
+// Add more or delete Q&A pairs as needed
 const questions = [
   {
     q: "What is PetChart?",
@@ -33,7 +34,7 @@ const questions = [
     q: "Is my data private?",
     a: (
       <>
-        Yes, everything's encrypted in transit and at rest. You can also export or delete your stuff anytime.
+        Yes, everything's encrypted! You can also export or delete your stuff anytime.
       </>
     ),
   },
@@ -60,6 +61,8 @@ const questions = [
   },
 ];
 
+// Animations
+// This animates the page on load
 export default function FaqContent() {
   const pageAnim = {
     hidden: { opacity: 0, y: 8 },
@@ -76,6 +79,7 @@ export default function FaqContent() {
     show: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
   };
 
+  // This displays the q&a FAQ content
   return (
     <motion.main
       initial="hidden"
