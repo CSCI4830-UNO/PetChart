@@ -1,0 +1,1 @@
+We need to mock some libraries for testing purposes. This directory contains manual mocks for those libraries.
