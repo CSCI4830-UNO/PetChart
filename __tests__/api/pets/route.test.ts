@@ -117,7 +117,8 @@ describe('/api/pets', () => {
       });
       const res = await POST(req);
 
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(201); // Created!!
+    // expect(res.status).toBe(200); // legcay, OK is not ideal we want 201 created
       const data = await res.json();
       expect(data).toEqual(savedPet);
     });
