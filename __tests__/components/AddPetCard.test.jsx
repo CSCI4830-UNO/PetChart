@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { AddPetCard } from '../../components/AddPetCard'
 
-// Add to the top of your test file or setup file
+// mock userRouter
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(() => ({
         push: jest.fn(),
@@ -11,7 +11,6 @@ jest.mock('next/navigation', () => ({
         })),
 }));
 
-
 // mock userRouter.push()
 jest.mock('next/router', () => ({
     useRouter: jest.fn(() => ({
@@ -19,7 +18,7 @@ jest.mock('next/router', () => ({
     })),
 }));
 
-// Mock the next-auth module
+// mock the next-auth module
 jest.mock('next-auth/react', () => ({
     signIn: jest.fn(),
 }));
