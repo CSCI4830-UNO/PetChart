@@ -3,7 +3,19 @@
 import React from "react";
 import Image from "next/image";
 
-// this function is used to upload a photo to the server and manage its state
+// upload a photo to the server and manage its state
+export function extractId(raw: string): string {
+  try {
+    const url = new URL(raw, location.origin);
+    const segments = url.pathname.split("/").filter(Boolean);
+    return segments.at(-1) || raw;
+  } catch {
+    const cleaned = raw.split(/[?#]/)[0];
+    const parts = cleaned.split("/").filter(Boolean);
+    return parts.at(-1) || cleaned;
+  }
+}
+
 export default function UploadPhotoMongo({
   value,       // current image URL or ID
   onChange,    // new image uploaded or removed
@@ -22,18 +34,6 @@ export default function UploadPhotoMongo({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // extracts file ID from URL
-  function extractId(raw: string): string {
-    try {
-      const url = new URL(raw, location.origin);
-      const segments = url.pathname.split("/").filter(Boolean);
-      return segments.at(-1) || raw;
-    } catch {
-      const cleaned = raw.split(/[?#]/)[0];
-      const parts = cleaned.split("/").filter(Boolean);
-      return parts.at(-1) || cleaned;
-    }
-  }
 
   // this is called when the user picks a file
   function handlePick(e: React.ChangeEvent<HTMLInputElement>) {
@@ -112,6 +112,16 @@ export default function UploadPhotoMongo({
       </label>
 
       {error && <div className="text-xs text-rose-600">{error}</div>}
+
+      {/* preview + remove function for when users upload a photo */}
+      {preview && (
+        <div className="flex items-center gap-3">
+          <img data-testid="preview-img" src={preview} alt="preview" className="w-20 h-20 object-cover rounded" />
+          <button data-testid="remove-btn" onClick={handleRemove} className="text-sm text-rose-600">
+            Remove
+          </button>
+        </div>
+      )}
       
     </div>
   );
