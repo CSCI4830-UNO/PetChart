@@ -81,10 +81,6 @@ export function PetCard({ pet }: PetCardProps) {
             <div className="text-5xl">{getSpeciesEmoji(pet.species)}</div>
           </div>
         )}
-        {/* small badge over media */}
-        <div className="pointer-events-none absolute bottom-2 left-2 rounded-full bg-white/90 dark:bg-[#242526]/90 px-2 py-0.5 text-xs ring-1 ring-slate-200 dark:ring-[#3a3b3c] text-gray-900 dark:text-gray-200">
-          {pet.breed ? `${pet.breed} ${pet.species}` : pet.species}
-        </div>
       </div>
 
       <CardHeader className="pb-3">

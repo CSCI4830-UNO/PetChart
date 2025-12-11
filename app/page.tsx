@@ -120,7 +120,7 @@ export default function HomePage() {
               Your Pet Family
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
-              All their records, in one place. Keep track of vaccinations, medications, appointments, and more with ease.
+              All their records, in one place. Keep track of vaccinations, medications, appointments, and more.
             </p>
           </div>
 
@@ -215,11 +215,11 @@ export default function HomePage() {
                 <div className="text-xs font-medium text-gray-900 dark:text-gray-200 group-hover:text-purple-600 dark:group-hover:text-purple-400">Medication</div>
               </button>
               <button 
-                onClick={() => router.push("/reports")} 
-                className="group rounded-xl bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] border border-gray-100 dark:border-[#3a3b3c] p-4 text-center transition-all hover:bg-orange-50 dark:hover:bg-orange-950/50 hover:border-orange-200 dark:hover:border-orange-900"
+                onClick={() => router.push("/flea-tick-treatments/add")} 
+                className="group rounded-xl bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] border border-gray-100 dark:border-[#3a3b3c] p-4 text-center transition-all hover:bg-amber-50 dark:hover:bg-amber-950/50 hover:border-amber-200 dark:hover:border-amber-900"
               >
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📊</div>
-                <div className="text-xs font-medium text-gray-900 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400">Reports</div>
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">🐛</div>
+                <div className="text-xs font-medium text-gray-900 dark:text-gray-200 group-hover:text-amber-600 dark:group-hover:text-amber-400">Flea & Tick</div>
               </button>
             </div>
           </div>

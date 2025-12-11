@@ -33,8 +33,10 @@ export interface Pet extends Document {
         }>;
         fleaTickTreatments: Array<{
             treatment: string;
+            dosage?: string;
             date: Date;
             nextDue?: Date;
+            prescribingVet?: string;
             notes?: string;
             lastReminderSent?: Date;
         }>;
@@ -77,8 +79,10 @@ const PetSchema = new Schema<Pet>(
             }],
             fleaTickTreatments: [{
                 treatment: { type: String, required: true },
+                dosage: { type: String },
                 date: { type: Date, required: true },
                 nextDue: { type: Date },
+                prescribingVet: { type: String },
                 notes: { type: String },
                 lastReminderSent: { type: Date }
             }]

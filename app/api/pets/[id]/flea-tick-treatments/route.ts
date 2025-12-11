@@ -16,7 +16,7 @@ export async function POST(
 
     await dbConnect();
 
-    const { treatment, date, nextDue, notes } = await request.json();
+    const { treatment, dosage, date, nextDue, prescribingVet, notes } = await request.json();
 
     if (!treatment || !date) {
       return NextResponse.json(
@@ -36,8 +36,10 @@ export async function POST(
 
     const fleaTreatment = {
       treatment,
+      dosage: dosage || undefined,
       date: new Date(date),
       nextDue: nextDue ? new Date(nextDue) : undefined,
+      prescribingVet: prescribingVet || undefined,
       notes,
     };
 
