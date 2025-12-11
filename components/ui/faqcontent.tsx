@@ -85,11 +85,11 @@ export default function FaqContent() {
       initial="hidden"
       animate="show"
       variants={pageAnim}
-      className="min-h-screen bg-gradient-to-b from-white to-blue-50 text-slate-900"
+      className="min-h-screen bg-gradient-to-b from-white dark:from-[#18191a] to-blue-50 dark:to-[#242526] text-slate-900 dark:text-gray-100"
     >
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 text-center">
-        <h1 className="text-4xl font-semibold tracking-tight">FAQs</h1>
-        <p className="mt-3 text-slate-600">Things people usually ask about PetChart.</p>
+        <h1 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">FAQs</h1>
+        <p className="mt-3 text-slate-600 dark:text-slate-400">Things people usually ask about PetChart.</p>
       </div>
 
       <section className="mx-auto max-w-3xl px-6 pb-24">
@@ -97,19 +97,19 @@ export default function FaqContent() {
           variants={containerFade}
           initial="hidden"
           animate="show"
-          className="rounded-3xl border border-black/10 bg-white/70 backdrop-blur shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+          className="rounded-3xl border border-black/10 dark:border-[#3a3b3c] bg-white/70 dark:bg-[#242526]/70 backdrop-blur shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)]"
         >
           {questions.map((faq, i) => (
             <motion.div key={i} variants={itemFade}>
               <details
-                className={`group mx-2 rounded-2xl px-4 md:px-6 border-b last:border-b-0 border-slate-200/70 ${
+                className={`group mx-2 rounded-2xl px-4 md:px-6 border-b last:border-b-0 border-slate-200/70 dark:border-[#3a3b3c] ${
                   i === 0 ? "pt-5 md:pt-6" : "pt-3"
-                } ${i === questions.length - 1 ? "pb-5 md:pb-6" : "pb-3"} transition-colors group-open:bg-blue-50/50 group-open:ring-1 group-open:ring-blue-200/60`}
+                } ${i === questions.length - 1 ? "pb-5 md:pb-6" : "pb-3"} transition-colors group-open:bg-blue-50/50 dark:group-open:bg-blue-950/30 group-open:ring-1 group-open:ring-blue-200/60 dark:group-open:ring-blue-900/60`}
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
-                  <h2 className="text-[17px] font-medium tracking-tight text-slate-900">{faq.q}</h2>
+                  <h2 className="text-[17px] font-medium tracking-tight text-slate-900 dark:text-gray-100">{faq.q}</h2>
                   <svg
-                    className="w-5 h-5 text-slate-500 transition-transform duration-300 group-open:rotate-180"
+                    className="w-5 h-5 text-slate-500 dark:text-slate-400 transition-transform duration-300 group-open:rotate-180"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -118,7 +118,7 @@ export default function FaqContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
                   </svg>
                 </summary>
-                <div className="mt-3 text-slate-700 leading-relaxed opacity-0 group-open:opacity-100 transition-opacity duration-300">
+                <div className="mt-3 text-slate-700 dark:text-slate-300 leading-relaxed opacity-0 group-open:opacity-100 transition-opacity duration-300">
                   {faq.a}
                 </div>
               </details>
@@ -134,7 +134,7 @@ export default function FaqContent() {
         >
           <Link
             href="/"
-            className="inline-flex items-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center rounded-xl bg-blue-600 dark:bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
           >
             Back to Home
           </Link>

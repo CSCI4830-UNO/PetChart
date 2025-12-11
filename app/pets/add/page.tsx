@@ -29,7 +29,6 @@ export default function AddPet() {
     microchipId: "",
     birthday: "",
     notes: "",
-    // ⬇️ new
     photoUrl: "" as string, // stores `/api/images/<id>` after upload
   });
 
@@ -81,7 +80,6 @@ export default function AddPet() {
         microchipId: formData.microchipId || undefined,
         birthday: formData.birthday || undefined,
         notes: formData.notes || undefined,
-        // ⬇️ include uploaded photo
         photoUrl: formData.photoUrl || undefined,
       };
 
@@ -136,19 +134,19 @@ export default function AddPet() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-[#18191a] dark:via-[#18191a] dark:to-[#242526] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-[#18191a] dark:via-[#18191a] dark:to-[#242526]">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-[#242526] shadow-sm border-b border-gray-200 dark:border-[#3a3b3c]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-6">
             <Button variant="ghost" onClick={() => router.back()} className="mr-4">

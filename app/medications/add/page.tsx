@@ -12,13 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Pill, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines the Medication type
 interface Pet {
   _id: string;
   name: string;
   species: string;
   breed?: string;
 }
-
+// Main component for adding medication
 export default function AddMedication() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function AddMedication() {
         return;
       }
 
+      // API call to add medication
       const res = await fetch(`/api/pets/${formData.petId}/medications`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,7 +90,7 @@ export default function AddMedication() {
 
       if (res.ok) {
         toast.success('Medication added');
-        router.push('/');
+        router.push(`/medications/${formData.petId}`);
       } else {
         const err = await res.json();
         toast.error(err.error || 'Failed to add medication');
@@ -100,46 +102,60 @@ export default function AddMedication() {
       setLoading(false);
     }
   };
-
+  
+  // Displays the main component
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-6">
-            <Button variant="ghost" onClick={() => router.back()} className="mr-4">
-              <ArrowLeft size={20} className="mr-2" />
-              Back
-            </Button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                <Pill size={24} className="text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Add Medication</h1>
-                <p className="text-sm text-gray-600">Add a new medication for a pet</p>
-              </div>
+    <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] text-gray-900 dark:text-white">
+      <header className="sticky top-0 z-20 border-b border-gray-200 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-start justify-between py-6">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight">Add Medication</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Add a new medication for a pet</p>
             </div>
+            <button
+              onClick={() => router.push("/")}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-2"
+              aria-label="Close"
+            >
+              <ArrowLeft size={24} strokeWidth={1.5} />
+            </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Medication Details</CardTitle>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-8">
+        <div className="mb-8 flex flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-sm uppercase tracking-[0.16em] text-gray-500 dark:text-gray-400">Health</p>
+              <h2 className="text-3xl font-semibold tracking-tight dark:text-white">Track Medications</h2>
+            </div>
+            <div className="rounded-full border border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#242526] px-4 py-2 text-sm text-gray-700 dark:text-gray-300 shadow-sm">
+              💊 Medication
+            </div>
+          </div>
+            <div className="h-1 w-16 rounded-full bg-gray-900 dark:bg-white"></div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <Card className="rounded-2xl border border-gray-200 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                Medication Details
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="pet">Select Pet *</Label>
                   <Select value={formData.petId} onValueChange={(v) => handleInputChange('petId', v)}>
-                    <SelectTrigger>
+                    <SelectTrigger className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] h-12 text-gray-900 dark:text-white">
                       <SelectValue placeholder="Choose a pet" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white">
+                    <SelectContent className="bg-white dark:bg-[#18191a] dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] rounded-xl">
                       {pets.map(p => (
-                        <SelectItem key={p._id} value={p._id}>{p.name} - {p.species}</SelectItem>
+                        <SelectItem key={p._id} value={p._id} className="cursor-pointer">{p.name} - {p.species}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -147,33 +163,80 @@ export default function AddMedication() {
 
                 <div>
                   <Label htmlFor="medication">Medication *</Label>
-                  <Input id="medication" value={formData.medication} onChange={(e) => handleInputChange('medication', e.target.value)} required />
+                  <Input
+                    id="medication"
+                    value={formData.medication}
+                    onChange={(e) => handleInputChange('medication', e.target.value)}
+                    required
+                    placeholder="e.g., Amoxicillin"
+                    className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="dosage">Dosage *</Label>
-                  <Input id="dosage" value={formData.dosage} onChange={(e) => handleInputChange('dosage', e.target.value)} required placeholder="e.g., 5 mg once daily" />
+                  <Input
+                    id="dosage"
+                    value={formData.dosage}
+                    onChange={(e) => handleInputChange('dosage', e.target.value)}
+                    required
+                    placeholder="e.g., 5 mg once daily"
+                    className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="startDate">Start Date *</Label>
-                    <Input id="startDate" type="date" value={formData.startDate} onChange={(e) => handleInputChange('startDate', e.target.value)} required />
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={formData.startDate}
+                      onChange={(e) => handleInputChange('startDate', e.target.value)}
+                      required
+                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white"
+                    />
                   </div>
                   <div>
                     <Label htmlFor="endDate">End Date (optional)</Label>
-                    <Input id="endDate" type="date" value={formData.endDate} onChange={(e) => handleInputChange('endDate', e.target.value)} />
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={formData.endDate}
+                      onChange={(e) => handleInputChange('endDate', e.target.value)}
+                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white"
+                    />
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="notes">Notes</Label>
-                  <Textarea id="notes" value={formData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} rows={3} />
+                  <Textarea
+                    id="notes"
+                    value={formData.notes}
+                    onChange={(e) => handleInputChange('notes', e.target.value)}
+                    rows={3}
+                    placeholder="Any additional information..."
+                    className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
+                  />
                 </div>
 
-                <div className="flex justify-end gap-4">
-                  <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
-                  <Button type="submit" className="bg-purple-600 hover:bg-purple-700" disabled={loading}>{loading ? 'Adding...' : 'Add Medication'}</Button>
+                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => router.push("/")}
+                    className="rounded-full border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] text-gray-800 hover:bg-gray-100 dark:bg-[#3a3b3c] dark:bg-[#3a3b3c]"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="rounded-full bg-gray-900 px-6 text-white hover:bg-black"
+                    disabled={loading}
+                  >
+                    {loading ? 'Adding...' : 'Add Medication'}
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -183,3 +246,6 @@ export default function AddMedication() {
     </div>
   );
 }
+
+
+

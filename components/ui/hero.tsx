@@ -12,10 +12,10 @@ export default function Hero() {
       <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
           
-          <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">
+          <h1 className="text-5xl font-semibold tracking-tight md:text-6xl text-slate-900 dark:text-white">
             Health records your pet deserves.
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
             Track vaccinations, medications, treatments, and appointments — beautifully organized
             and available everywhere. Simple to use. Powerful when you need it.
           </p>
@@ -23,7 +23,7 @@ export default function Hero() {
           <div className="mt-8 flex items-center justify-center gap-3">
             <Link
               href="#features"
-              className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-800 hover:bg-slate-50"
+              className="inline-flex items-center gap-1 rounded-full border border-slate-300 dark:border-[#3a3b3c] px-5 py-2.5 text-sm font-medium text-slate-800 dark:text-gray-200 hover:bg-slate-50 dark:hover:bg-[#242526] transition-colors"
             >
               Explore features <ChevronRight className="h-4 w-4" />
             </Link>
@@ -39,21 +39,21 @@ export default function Hero() {
         </div>
 
         {/* Feature row section */}
-        <div className="mx-auto mt-16 max-w-5xl rounded-3xl border border-black/10 bg-white/70 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur">
+        <div className="mx-auto mt-16 max-w-5xl rounded-3xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-[#242526]/70 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
-              <h3 className="text-xl font-semibold">Everything in one place</h3>
-              <p className="mt-2 text-slate-600">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Everything in one place</h3>
+              <p className="mt-2 text-slate-600 dark:text-gray-300">
                 Each pet gets a crisp profile—vaccine history, weight trends, labs, notes, and meds.
                 Add records in seconds. Share with your vet when needed.
               </p>
-              <ul className="mt-4 space-y-2 text-sm text-slate-700">
+              <ul className="mt-4 space-y-2 text-sm text-slate-700 dark:text-gray-300">
                 <li>• Beautiful, searchable timelines</li>
                 <li>• Attach documents & photos</li>
                 <li>• Works great on phone and desktop</li>
               </ul>
             </div>
-            <div className="aspect-[4/2] rounded-2xl bg-gradient-to-br from-indigo-50 to-rose-50 ring-1 ring-black/5">
+            <div className="aspect-[4/2] rounded-2xl bg-gradient-to-br from-indigo-50 to-rose-50 dark:from-[#242526] dark:to-[#2a2b2c] ring-1 ring-black/5 dark:ring-white/10">
               <Image
                 src= "/icons/dashboard-preview.png"
                 alt="PetChart dashboard preview"

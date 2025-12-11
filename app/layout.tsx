@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./api/auth/[...nextauth]/providers";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "PetChart",
@@ -16,11 +17,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body>
-          {children}
-          <Toaster position="top-right" />
-        </body>
+        <ThemeProvider>
+          <body>
+            {children}
+            <Toaster position="top-right" />
+          </body>
+        </ThemeProvider>
       </Providers>
     </html>
   );
 }
+

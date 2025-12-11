@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
 import dbConnect from "@/lib/mongoose";
-import { getDb } from "@/lib/mongo";
 import Pet from "@/models/Pet";
 import { Types } from "mongoose";
 
@@ -66,7 +65,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             birthday,
             notes,
             photos,
-            photoUrl
+            photoUrl,
+            medicalHistory
         } = data;
 
         if (!name || !species) {
@@ -104,6 +104,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
             notes: notes?.trim() || "",
             updatedAt: new Date()
         };
+
+        if (medicalHistory) {
+            payload.medicalHistory = medicalHistory;
+        }
 
         if (Array.isArray(photos)) {
             payload.photos = photos;

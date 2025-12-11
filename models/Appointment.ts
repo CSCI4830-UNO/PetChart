@@ -12,6 +12,7 @@ export interface Appointment extends Document {
     notes?: string; // Additional notes
     status: 'scheduled' | 'completed' | 'cancelled' | 'missed';
     reminderSent?: boolean; // For future reminder functionality
+    lastReminderSent?: Date; // Timestamp of last automatic reminder
     createdAt: Date;
     updatedAt: Date;
 }
@@ -65,6 +66,9 @@ const AppointmentSchema = new Schema<Appointment>(
         reminderSent: { 
             type: Boolean, 
             default: false 
+        },
+        lastReminderSent: {
+            type: Date
         }
     },
     {

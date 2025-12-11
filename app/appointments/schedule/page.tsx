@@ -127,10 +127,10 @@ export default function ScheduleAppointment() {
 
     if (status === "loading") {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+            <div className="min-h-screen bg-white dark:bg-[#18191a] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading...</p>
                 </div>
             </div>
         );
@@ -141,237 +141,214 @@ export default function ScheduleAppointment() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="min-h-screen bg-white dark:bg-[#18191a]">
             {/* Header */}
-            <header className="bg-white shadow-sm border-b border-gray-200">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center py-6">
-                        <Button
-                            variant="ghost"
-                            onClick={() => router.back()}
-                            className="mr-4"
-                        >
-                            <ArrowLeft size={20} className="mr-2" />
-                            Back
-                        </Button>
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <Calendar size={24} className="text-white" />
-                            </div>
-                            <div>
-                                <h1 className="text-2xl font-bold text-gray-900">Schedule Appointment</h1>
-                                <p className="text-sm text-gray-600">Book a future appointment for your pet</p>
-                            </div>
+            <header className="sticky top-0 z-40 border-b border-gray-100 dark:border-[#3a3b3c]/50 backdrop-blur-md bg-white/80 dark:bg-[#242526]/80">
+                <div className="max-w-4xl mx-auto px-6 lg:px-8">
+                    <div className="flex items-start justify-between py-6">
+                        <div>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Schedule Appointment</h1>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Book a future appointment for your pet</p>
                         </div>
+                        <button
+                            onClick={() => router.back()}
+                            className="text-gray-400 hover:text-gray-600 transition-colors p-2"
+                            aria-label="Close"
+                        >
+                            <ArrowLeft size={24} strokeWidth={1.5} />
+                        </button>
                     </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Left Column - Form */}
-                        <div className="space-y-6">
+                        <div className="lg:col-span-2 space-y-6">
                             {/* Pet Selection */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Stethoscope size={20} className="text-blue-600" />
-                                        Pet Information
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <Label htmlFor="pet">Select Pet *</Label>
-                                            <Select 
-                                                value={formData.petId} 
-                                                onValueChange={(value) => handleInputChange("petId", value)}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Choose a pet" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {pets.map((pet) => (
-                                                        <SelectItem key={pet._id} value={pet._id}>
-                                                            {pet.name} - {pet.breed ? `${pet.breed} ` : ""}{pet.species}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        {pets.length === 0 && (
-                                            <div className="text-center py-4 text-gray-500">
-                                                <PlusCircle size={24} className="mx-auto mb-2 text-gray-400" />
-                                                <p className="text-sm">No pets found. Add a pet first to schedule appointments.</p>
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="mt-2"
-                                                    onClick={() => router.push("/pets/add")}
-                                                >
-                                                    Add Pet
-                                                </Button>
-                                            </div>
-                                        )}
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] dark:bg-[#242526] p-6">
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Pet</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <Label htmlFor="pet" className="text-sm font-medium text-gray-700">Pet *</Label>
+                                        <Select 
+                                            value={formData.petId} 
+                                            onValueChange={(value) => handleInputChange("petId", value)}
+                                        >
+                                            <SelectTrigger className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]">
+                                                <SelectValue placeholder="Choose a pet" />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-white dark:bg-[#18191a] dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] rounded-lg">
+                                                {pets.map((pet) => (
+                                                        <SelectItem key={pet._id} value={pet._id} className="cursor-pointer">
+                                                        {pet.name} - {pet.breed ? `${pet.breed} ` : ""}{pet.species}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </div>
-                                </CardContent>
-                            </Card>
+                                    {pets.length === 0 && (
+                                        <div className="text-center py-8 bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] rounded-lg">
+                                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 mb-4">No pets found. Add a pet first to schedule appointments.</p>
+                                            <Button
+                                                type="button"
+                                                onClick={() => router.push("/pets/add")}
+                                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                                            >
+                                                Add Pet
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
 
                             {/* Date & Time */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Clock size={20} className="text-green-600" />
-                                        Date & Time
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <Label htmlFor="date">Appointment Date *</Label>
-                                            <Input
-                                                type="date"
-                                                id="date"
-                                                value={formData.appointmentDate}
-                                                onChange={(e) => handleInputChange("appointmentDate", e.target.value)}
-                                                min={new Date().toISOString().split('T')[0]}
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="time">Appointment Time *</Label>
-                                            <Input
-                                                type="time"
-                                                id="time"
-                                                value={formData.appointmentTime}
-                                                onChange={(e) => handleInputChange("appointmentTime", e.target.value)}
-                                                required
-                                            />
-                                        </div>
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6">
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white">Date & Time</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <Label htmlFor="date" className="text-sm font-medium text-gray-700">Date *</Label>
+                                        <Input
+                                            type="date"
+                                            id="date"
+                                            value={formData.appointmentDate}
+                                            onChange={(e) => handleInputChange("appointmentDate", e.target.value)}
+                                            min={new Date().toISOString().split('T')[0]}
+                                            required
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
+                                        />
                                     </div>
-                                </CardContent>
-                            </Card>
+                                    <div>
+                                        <Label htmlFor="time" className="text-sm font-medium text-gray-700">Time *</Label>
+                                        <Input
+                                            type="time"
+                                            id="time"
+                                            value={formData.appointmentTime}
+                                            onChange={(e) => handleInputChange("appointmentTime", e.target.value)}
+                                            required
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Location & Reason */}
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <MapPin size={20} className="text-purple-600" />
-                                        Appointment Details
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <Label htmlFor="location">Location/Clinic *</Label>
-                                            <Input
-                                                type="text"
-                                                id="location"
-                                                value={formData.location}
-                                                onChange={(e) => handleInputChange("location", e.target.value)}
-                                                placeholder="e.g., City Animal Hospital, 123 Main St"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="reason">Reason for Visit *</Label>
-                                            <Input
-                                                type="text"
-                                                id="reason"
-                                                value={formData.reason}
-                                                onChange={(e) => handleInputChange("reason", e.target.value)}
-                                                placeholder="e.g., Annual checkup, Vaccination, Dental cleaning"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="notes">Additional Notes</Label>
-                                            <Textarea
-                                                id="notes"
-                                                value={formData.notes}
-                                                onChange={(e) => handleInputChange("notes", e.target.value)}
-                                                placeholder="Any additional information or special instructions..."
-                                                rows={3}
-                                            />
-                                        </div>
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6">
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white">Details</h3>
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <Label htmlFor="location" className="text-sm font-medium text-gray-700">Location/Clinic *</Label>
+                                        <Input
+                                            type="text"
+                                            id="location"
+                                            value={formData.location}
+                                            onChange={(e) => handleInputChange("location", e.target.value)}
+                                            placeholder="e.g., City Animal Hospital, 123 Main St"
+                                            required
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
+                                        />
                                     </div>
-                                </CardContent>
-                            </Card>
+                                    <div>
+                                        <Label htmlFor="reason" className="text-sm font-medium text-gray-700">Reason for Visit *</Label>
+                                        <Input
+                                            type="text"
+                                            id="reason"
+                                            value={formData.reason}
+                                            onChange={(e) => handleInputChange("reason", e.target.value)}
+                                            placeholder="e.g., Annual checkup, Vaccination, Dental cleaning"
+                                            required
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="notes" className="text-sm font-medium text-gray-700">Additional Notes</Label>
+                                        <Textarea
+                                            id="notes"
+                                            value={formData.notes}
+                                            onChange={(e) => handleInputChange("notes", e.target.value)}
+                                            placeholder="Any additional information or special instructions..."
+                                            rows={3}
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Right Column - Preview */}
-                        <div className="space-y-6">
-                            <Card className="sticky top-6">
-                                <CardHeader>
-                                    <CardTitle>Appointment Preview</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        {formData.petId && (
-                                            <div>
-                                                <h4 className="font-medium text-gray-900">Pet</h4>
-                                                <p className="text-gray-600">
-                                                    {pets.find(p => p._id === formData.petId)?.name || "Unknown"}
-                                                </p>
-                                            </div>
-                                        )}
-                                        
-                                        {formatDateTime() && (
-                                            <div>
-                                                <h4 className="font-medium text-gray-900">Date & Time</h4>
-                                                <p className="text-gray-600">{formatDateTime()}</p>
-                                            </div>
-                                        )}
-                                        
-                                        {formData.location && (
-                                            <div>
-                                                <h4 className="font-medium text-gray-900">Location</h4>
-                                                <p className="text-gray-600">{formData.location}</p>
-                                            </div>
-                                        )}
-                                        
-                                        {formData.reason && (
-                                            <div>
-                                                <h4 className="font-medium text-gray-900">Reason</h4>
-                                                <p className="text-gray-600">{formData.reason}</p>
-                                            </div>
-                                        )}
-                                        
-                                        {formData.notes && (
-                                            <div>
-                                                <h4 className="font-medium text-gray-900">Notes</h4>
-                                                <p className="text-gray-600">{formData.notes}</p>
-                                            </div>
-                                        )}
+                        <div>
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6 bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] sticky top-20">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white mb-4">Preview</h3>
+                                <div className="space-y-4">
+                                    {formData.petId && (
+                                        <div>
+                                            <p className="text-xs uppercase tracking-wide text-gray-500">Pet</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">
+                                                {pets.find(p => p._id === formData.petId)?.name || "Unknown"}
+                                            </p>
+                                        </div>
+                                    )}
+                                    
+                                    {formatDateTime() && (
+                                        <div>
+                                            <p className="text-xs uppercase tracking-wide text-gray-500">Date & Time</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formatDateTime()}</p>
+                                        </div>
+                                    )}
+                                    
+                                    {formData.location && (
+                                        <div>
+                                            <p className="text-xs uppercase tracking-wide text-gray-500">Location</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formData.location}</p>
+                                        </div>
+                                    )}
+                                    
+                                    {formData.reason && (
+                                        <div>
+                                            <p className="text-xs uppercase tracking-wide text-gray-500">Reason</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formData.reason}</p>
+                                        </div>
+                                    )}
+                                    
+                                    {formData.notes && (
+                                        <div>
+                                            <p className="text-xs uppercase tracking-wide text-gray-500">Notes</p>
+                                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 text-sm mt-1">{formData.notes}</p>
+                                        </div>
+                                    )}
 
-                                        {!formData.petId && !formData.appointmentDate && (
-                                            <div className="text-center py-8 text-gray-400">
-                                                <Calendar size={48} className="mx-auto mb-4" />
-                                                <p>Fill in the form to see appointment preview</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                    {!formData.petId && !formData.appointmentDate && (
+                                        <div className="text-center py-8">
+                                            <p className="text-sm text-gray-500">Fill in the form to see preview</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-end space-x-4 pt-6">
+                    <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#3a3b3c]">
                         <Button
                             type="button"
                             variant="outline"
                             onClick={() => router.back()}
+                            className="rounded-lg text-gray-700"
                         >
                             Cancel
                         </Button>
                         <Button
                             type="submit"
                             disabled={loading || pets.length === 0}
-                            className="bg-blue-600 hover:bg-blue-700"
+                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                         >
                             {loading ? "Scheduling..." : "Schedule Appointment"}
                         </Button>
@@ -381,3 +358,5 @@ export default function ScheduleAppointment() {
         </div>
     );
 }
+
+
