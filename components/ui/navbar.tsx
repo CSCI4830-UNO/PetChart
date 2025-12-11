@@ -60,21 +60,23 @@ export default function NavBar() {
           </span>
         </Link>
 
-        {/* Links */}
-        <div className="hidden md:flex gap-8 text-[15px] font-medium text-slate-700 dark:text-slate-300">
-          <Link href="#features" className="relative hover:text-black dark:hover:text-white transition-colors group">
-            Features
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="#privacy" className="relative hover:text-black dark:hover:text-white transition-colors group">
-            Privacy
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/faq" className="relative hover:text-black dark:hover:text-white transition-colors group">
-            FAQ
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-        </div>
+        {/* Links - only show when not signed in */}
+        {!session?.user && (
+          <div className="hidden md:flex gap-8 text-[15px] font-medium text-slate-700 dark:text-slate-300">
+            <Link href="#features" className="relative hover:text-black dark:hover:text-white transition-colors group">
+              Features
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="#privacy" className="relative hover:text-black dark:hover:text-white transition-colors group">
+              Privacy
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="/faq" className="relative hover:text-black dark:hover:text-white transition-colors group">
+              FAQ
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 dark:bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+          </div>
+        )}
 
         {/* Sign in button / Avatar dropdown */}
         <div className="hidden md:flex gap-3 items-center">

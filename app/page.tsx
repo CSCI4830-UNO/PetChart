@@ -43,7 +43,7 @@ export default function HomePage() {
   // ---------- Not signed in: Marketing Site ----------
   if (!userSession?.user) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#18191a] dark:bg-[#18191a] dark:bg-[#18191a] text-slate-900 dark:text-gray-100 antialiased">
+      <div className="min-h-screen bg-white dark:bg-[#18191a] text-slate-900 dark:text-gray-100 antialiased">
         <NavBar />
 
         <motion.main initial="hidden" animate="show" variants={motionGroup}>
