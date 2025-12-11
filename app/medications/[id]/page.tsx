@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Plus, Pill, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines Medication and Pet types
 interface Medication {
     _id?: string;
     medication: string;
@@ -16,7 +17,7 @@ interface Medication {
     endDate?: string;
     notes?: string;
 }
-
+// Defines Pet type
 interface Pet {
     _id: string;
     name: string;
@@ -27,6 +28,7 @@ interface Pet {
     };
 }
 
+// Main component for displaying medication history
 export default function MedicationHistory() {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -102,7 +104,7 @@ export default function MedicationHistory() {
             });
 
             if (response.ok) {
-                // Re-fetch the pet to ensure we have the latest data
+                // Re-fetch the pet to ensure latest data
                 const fetchResponse = await fetch(`/api/pets/${petId}`);
                 if (fetchResponse.ok) {
                     const updated = await fetchResponse.json();
@@ -120,7 +122,7 @@ export default function MedicationHistory() {
             setDeleting(null);
         }
     };
-
+    // reformats date strings
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -128,7 +130,7 @@ export default function MedicationHistory() {
             day: "numeric"
         });
     };
-
+    // checks if medication is currently active
     const isActiveMedication = (medication: Medication) => {
         const now = new Date();
         const startDate = new Date(medication.startDate);
@@ -136,7 +138,7 @@ export default function MedicationHistory() {
 
         return startDate <= now && (!endDate || endDate >= now);
     };
-
+    // Displays loading state
     if (status === "loading" || loading) {
         return (
             <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] flex items-center justify-center">
@@ -152,10 +154,12 @@ export default function MedicationHistory() {
         return null;
     }
 
+    // separates active and inactive medications
     const medications = pet.medicalHistory.medications || [];
     const activeMedications = medications.filter(isActiveMedication);
     const inactiveMedications = medications.filter(m => !isActiveMedication(m));
 
+    // Displays the main component
     return (
         <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a]">
             {/* Header */}

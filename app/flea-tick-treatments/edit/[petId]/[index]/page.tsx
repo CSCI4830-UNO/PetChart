@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines Pet type
 interface Pet {
   _id: string;
   name: string;
@@ -28,6 +29,7 @@ interface Pet {
   };
 }
 
+// Main component for editing flea and tick treatment
 export default function EditFleaTickTreatment() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -149,6 +151,7 @@ export default function EditFleaTickTreatment() {
     }
   };
 
+// Displays loading state
   if (!pet) {
     return (
       <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] flex items-center justify-center">
@@ -159,7 +162,8 @@ export default function EditFleaTickTreatment() {
       </div>
     );
   }
-
+  
+  // Displays the form for editing treatment
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] text-gray-900 dark:text-white">
       <header className="sticky top-0 z-20 border-b border-gray-200 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">

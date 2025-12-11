@@ -12,13 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Pill, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines the Medication type
 interface Pet {
   _id: string;
   name: string;
   species: string;
   breed?: string;
 }
-
+// Main component for adding medication
 export default function AddMedication() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function AddMedication() {
         return;
       }
 
+      // API call to add medication
       const res = await fetch(`/api/pets/${formData.petId}/medications`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,7 +102,8 @@ export default function AddMedication() {
       setLoading(false);
     }
   };
-
+  
+  // Displays the main component
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] text-gray-900 dark:text-white">
       <header className="sticky top-0 z-20 border-b border-gray-200 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">

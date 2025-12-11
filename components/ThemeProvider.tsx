@@ -21,13 +21,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Load theme from localStorage and database
   useEffect(() => {
     const loadTheme = async () => {
-      // First, load from localStorage for immediate application
+      // load from localStorage
       const savedTheme = localStorage.getItem("theme") as Theme | null;
       if (savedTheme) {
         setThemeState(savedTheme);
       }
 
-      // Then, if user is logged in, fetch from database
+      // Then if user is logged in, fetch from database
       if (session?.user?.email) {
         try {
           const response = await fetch("/api/users/preferences");
@@ -101,7 +101,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     }
   };
-
+  
+// Provide theme context to children
   return (
     <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
       {children}
@@ -109,6 +110,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Custom hook to use the ThemeContext
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {

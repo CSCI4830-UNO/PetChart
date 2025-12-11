@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Bug, Calendar, Plus, Trash2, ArrowLeft, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines the FleaTreatment type
 interface FleaTreatment {
   treatment: string;
   dosage?: string;
@@ -18,7 +19,7 @@ interface FleaTreatment {
   notes?: string;
   _id?: string;
 }
-
+// Defines the Pet type
 interface Pet {
   _id: string;
   name: string;
@@ -29,6 +30,7 @@ interface Pet {
   };
 }
 
+// Main component for displaying flea and tick treatment history
 export default function FleaTickTreatmentHistory() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -38,12 +40,14 @@ export default function FleaTickTreatmentHistory() {
   const [pet, setPet] = useState<Pet | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Redirect to home if not authenticated
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
     }
   }, [status, router]);
 
+  // Fetch pet data including flea and tick treatments
   const fetchPet = async () => {
     try {
       const response = await fetch(`/api/pets/${petId}`);
@@ -61,13 +65,14 @@ export default function FleaTickTreatmentHistory() {
       setLoading(false);
     }
   };
-
+  // Fetches pet data when session or petId changes
   useEffect(() => {
     if (session?.user?.email && petId) {
       fetchPet();
     }
   }, [session, petId]);
 
+  // Handle deletion of a treatment
   const handleDeleteTreatment = async (index: number) => {
     if (!pet || !confirm("Are you sure you want to delete this treatment?")) {
       return;
@@ -110,7 +115,7 @@ export default function FleaTickTreatmentHistory() {
       toast.error("Failed to delete treatment");
     }
   };
-
+  // Formats date to a readable string
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -118,7 +123,7 @@ export default function FleaTickTreatmentHistory() {
       day: "numeric",
     });
   };
-
+  // Calculates days until next due date
   const getDaysUntilDue = (nextDue: string) => {
     const dueDate = new Date(nextDue);
     const today = new Date();
@@ -126,12 +131,12 @@ export default function FleaTickTreatmentHistory() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
-
+  // Determines treatment status based on next due date
   const getTreatmentStatus = (nextDue?: string) => {
     if (!nextDue) return null;
 
     const daysUntil = getDaysUntilDue(nextDue);
-
+    // Returns status label and color based on days until due
     if (daysUntil < 0) {
       return { label: "Overdue", color: "bg-red-100 text-red-800", days: Math.abs(daysUntil) };
     } else if (daysUntil <= 7) {
@@ -142,7 +147,7 @@ export default function FleaTickTreatmentHistory() {
 
     return { label: "Scheduled", color: "bg-gray-100 text-gray-800", days: daysUntil };
   };
-
+  // Displays loading state
   if (loading || !pet) {
     return (
       <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] flex items-center justify-center">
@@ -153,12 +158,13 @@ export default function FleaTickTreatmentHistory() {
       </div>
     );
   }
-
+  // Sort treatments by date descending
   const treatments = pet.medicalHistory?.fleaTickTreatments || [];
   const sortedTreatments = [...treatments].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
+  // Display the main component
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a]">
       <header className="sticky top-0 z-40 border-b border-gray-200/70 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">

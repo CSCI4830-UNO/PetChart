@@ -12,13 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Bug, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
+// Defines the Pet type
 interface Pet {
   _id: string;
   name: string;
   species: string;
   breed?: string;
 }
-
+// Main component for adding flea and tick treatment
 export default function AddFleaTickTreatment() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -27,19 +28,19 @@ export default function AddFleaTickTreatment() {
   const [formData, setFormData] = useState({
     petId: "",
     treatment: "",
-    dosage: "",
     date: "",
     nextDue: "",
-    prescribingVet: "",
     notes: ""
   });
-
+  
+  // Redirect to home if not authenticated
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/");
     }
   }, [status, router]);
 
+  // Fetch user's pets on component mount
   useEffect(() => {
     const fetchPets = async () => {
       if (!session?.user?.email) return;
@@ -64,29 +65,30 @@ export default function AddFleaTickTreatment() {
     fetchPets();
   }, [session]);
 
+  // Handle form input changes
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
-
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+    
+    // Validation
     try {
       if (!formData.petId || !formData.treatment || !formData.date) {
         toast.error('Please fill required fields');
         return;
       }
-
+      
+      // API call to add treatment
       const res = await fetch(`/api/pets/${formData.petId}/flea-tick-treatments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           treatment: formData.treatment,
-          dosage: formData.dosage || undefined,
           date: formData.date,
           nextDue: formData.nextDue || undefined,
-          prescribingVet: formData.prescribingVet || undefined,
           notes: formData.notes || undefined
         })
       });
@@ -105,7 +107,8 @@ export default function AddFleaTickTreatment() {
       setLoading(false);
     }
   };
-
+  
+  // Displays the form
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] text-gray-900 dark:text-white">
       <header className="sticky top-0 z-20 border-b border-gray-200 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
@@ -173,29 +176,6 @@ export default function AddFleaTickTreatment() {
                     placeholder="e.g., Frontline Plus, NexGard"
                     className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
                   />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="dosage">Dosage (optional)</Label>
-                    <Input
-                      id="dosage"
-                      value={formData.dosage}
-                      onChange={(e) => handleInputChange('dosage', e.target.value)}
-                      placeholder="e.g., 1 tablet, 0.5ml"
-                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="prescribingVet">Prescribing Vet (optional)</Label>
-                    <Input
-                      id="prescribingVet"
-                      value={formData.prescribingVet}
-                      onChange={(e) => handleInputChange('prescribingVet', e.target.value)}
-                      placeholder="e.g., Dr. Smith"
-                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
-                    />
-                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
