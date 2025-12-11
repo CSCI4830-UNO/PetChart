@@ -204,28 +204,28 @@ export default function MedicationHistory() {
                                 <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Current Medications</h2>
                                 <div className="space-y-4">
                                     {activeMedications.map((medication, index) => (
-                                        <div key={index} className="rounded-2xl border border-green-200/50 bg-green-50/50 p-6">
+                                        <div key={index} className="rounded-2xl border border-green-200/80 dark:border-green-900/50 bg-green-50/50 dark:bg-green-950/30 p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow">
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-3 mb-3">
-                                                        <h3 className="text-xl font-semibold text-gray-900">{medication.medication}</h3>
-                                                        <Badge className="bg-green-100 text-green-800 border-green-200 rounded-full px-3 py-1 text-xs font-medium">
+                                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{medication.medication}</h3>
+                                                        <Badge className="bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 border-green-200 dark:border-green-900/60 rounded-full px-3 py-1 text-xs font-medium">
                                                             Active
                                                         </Badge>
                                                     </div>
                                                     <div className="space-y-2 text-sm">
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Dosage</p>
-                                                            <p className="text-gray-900 font-medium mt-1">{medication.dosage}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Dosage</p>
+                                                            <p className="text-gray-900 dark:text-white font-medium mt-1">{medication.dosage}</p>
                                                         </div>
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Start Date</p>
-                                                            <p className="text-gray-900 mt-1">{formatDate(medication.startDate)}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Start Date</p>
+                                                            <p className="text-gray-900 dark:text-white mt-1">{formatDate(medication.startDate)}</p>
                                                         </div>
                                                         {medication.notes && (
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Notes</p>
-                                                                <p className="text-gray-600 mt-1">{medication.notes}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Notes</p>
+                                                                <p className="text-gray-600 dark:text-gray-300 mt-1">{medication.notes}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -233,7 +233,7 @@ export default function MedicationHistory() {
                                                 <button
                                                     onClick={() => handleDeleteMedication(index)}
                                                     disabled={deleting === `med-${index}`}
-                                                    className="text-red-600 hover:text-red-700 transition-colors p-2"
+                                                    className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2"
                                                     aria-label="Delete"
                                                 >
                                                     <Trash2 size={18} />
@@ -248,39 +248,39 @@ export default function MedicationHistory() {
                         {/* Inactive Medications */}
                         {inactiveMedications.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Past Medications</h2>
+                                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Past Medications</h2>
                                 <div className="space-y-4">
                                     {inactiveMedications.map((medication, index) => (
-                                        <div key={activeMedications.length + index} className="rounded-2xl border border-gray-200/80 bg-white p-6">
+                                        <div key={activeMedications.length + index} className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 bg-white dark:bg-[#242526] p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow">
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-3 mb-3">
-                                                        <h3 className="text-xl font-semibold text-gray-900">{medication.medication}</h3>
-                                                        <Badge className="bg-gray-100 text-gray-800 border-gray-200 rounded-full px-3 py-1 text-xs font-medium">
+                                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{medication.medication}</h3>
+                                                        <Badge className="bg-gray-100 dark:bg-gray-900/40 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-900/60 rounded-full px-3 py-1 text-xs font-medium">
                                                             Completed
                                                         </Badge>
                                                     </div>
                                                     <div className="space-y-2 text-sm">
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Dosage</p>
-                                                            <p className="text-gray-900 font-medium mt-1">{medication.dosage}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Dosage</p>
+                                                            <p className="text-gray-900 dark:text-white font-medium mt-1">{medication.dosage}</p>
                                                         </div>
                                                         <div className="flex gap-4">
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Start Date</p>
-                                                                <p className="text-gray-900 mt-1">{formatDate(medication.startDate)}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Start Date</p>
+                                                                <p className="text-gray-900 dark:text-white mt-1">{formatDate(medication.startDate)}</p>
                                                             </div>
                                                             {medication.endDate && (
                                                                 <div>
-                                                                    <p className="text-xs uppercase tracking-wide text-gray-500">End Date</p>
-                                                                    <p className="text-gray-900 mt-1">{formatDate(medication.endDate)}</p>
+                                                                    <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">End Date</p>
+                                                                    <p className="text-gray-900 dark:text-white mt-1">{formatDate(medication.endDate)}</p>
                                                                 </div>
                                                             )}
                                                         </div>
                                                         {medication.notes && (
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Notes</p>
-                                                                <p className="text-gray-600 mt-1">{medication.notes}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Notes</p>
+                                                                <p className="text-gray-600 dark:text-gray-300 mt-1">{medication.notes}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -288,7 +288,7 @@ export default function MedicationHistory() {
                                                 <button
                                                     onClick={() => handleDeleteMedication(activeMedications.length + index)}
                                                     disabled={deleting === `med-${activeMedications.length + index}`}
-                                                    className="text-red-600 hover:text-red-700 transition-colors p-2"
+                                                    className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2"
                                                     aria-label="Delete"
                                                 >
                                                     <Trash2 size={18} />

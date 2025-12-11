@@ -227,24 +227,24 @@ export default function VaccineHistory() {
                                 <h2 className="text-2xl font-semibold text-red-900 mb-4">Due or Overdue</h2>
                                 <div className="space-y-4">
                                     {dueVaccines.map((vaccination, index) => (
-                                        <div key={index} className="rounded-2xl border border-red-200/50 bg-red-50/50 p-6">
+                                        <div key={index} className="rounded-2xl border border-red-200/80 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/30 p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow">
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-3 mb-3">
-                                                        <h3 className="text-xl font-semibold text-gray-900">{vaccination.vaccine}</h3>
-                                                        <Badge className="bg-red-100 text-red-800 border-red-200 rounded-full px-3 py-1 text-xs font-medium">
+                                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{vaccination.vaccine}</h3>
+                                                        <Badge className="bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-900/60 rounded-full px-3 py-1 text-xs font-medium">
                                                             Due
                                                         </Badge>
                                                     </div>
                                                     <div className="space-y-2 text-sm">
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Last Given</p>
-                                                            <p className="text-gray-900 mt-1">{formatDate(vaccination.date)}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Last Given</p>
+                                                            <p className="text-gray-900 dark:text-white mt-1">{formatDate(vaccination.date)}</p>
                                                         </div>
                                                         {vaccination.nextDue && (
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Due Date</p>
-                                                                <p className="text-red-600 font-semibold mt-1">{formatDate(vaccination.nextDue)}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Due Date</p>
+                                                                <p className="text-red-600 dark:text-red-400 font-semibold mt-1">{formatDate(vaccination.nextDue)}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -252,7 +252,7 @@ export default function VaccineHistory() {
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => handleSendVaccineReminder(vaccinations.indexOf(vaccination))}
-                                                        className="text-blue-600 hover:text-blue-700 transition-colors p-2"
+                                                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2"
                                                         aria-label="Send reminder"
                                                         title="Send reminder email"
                                                     >
@@ -261,7 +261,7 @@ export default function VaccineHistory() {
                                                     <button
                                                         onClick={() => handleDeleteVaccination(vaccinations.indexOf(vaccination))}
                                                         disabled={deleting === `vac-${vaccinations.indexOf(vaccination)}`}
-                                                        className="text-red-600 hover:text-red-700 transition-colors p-2"
+                                                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2"
                                                         aria-label="Delete"
                                                     >
                                                         <Trash2 size={18} />
@@ -277,27 +277,27 @@ export default function VaccineHistory() {
                         {/* Upcoming Vaccines */}
                         {upcomingVaccines.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-semibold text-blue-900 mb-4">Upcoming</h2>
+                                <h2 className="text-2xl font-semibold text-blue-900 dark:text-blue-300 mb-4">Upcoming</h2>
                                 <div className="space-y-4">
                                     {upcomingVaccines.map((vaccination, index) => (
-                                        <div key={dueVaccines.length + index} className="rounded-2xl border border-blue-200/50 bg-blue-50/50 p-6">
+                                        <div key={dueVaccines.length + index} className="rounded-2xl border border-blue-200/80 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/30 p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow">
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-3 mb-3">
-                                                        <h3 className="text-xl font-semibold text-gray-900">{vaccination.vaccine}</h3>
-                                                        <Badge className="bg-blue-100 text-blue-800 border-blue-200 rounded-full px-3 py-1 text-xs font-medium">
+                                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{vaccination.vaccine}</h3>
+                                                        <Badge className="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-900/60 rounded-full px-3 py-1 text-xs font-medium">
                                                             Upcoming
                                                         </Badge>
                                                     </div>
                                                     <div className="space-y-2 text-sm">
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Last Given</p>
-                                                            <p className="text-gray-900 mt-1">{formatDate(vaccination.date)}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Last Given</p>
+                                                            <p className="text-gray-900 dark:text-white mt-1">{formatDate(vaccination.date)}</p>
                                                         </div>
                                                         {vaccination.nextDue && (
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Next Due</p>
-                                                                <p className="text-blue-600 font-semibold mt-1">{formatDate(vaccination.nextDue)}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Next Due</p>
+                                                                <p className="text-blue-600 dark:text-blue-400 font-semibold mt-1">{formatDate(vaccination.nextDue)}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -305,7 +305,7 @@ export default function VaccineHistory() {
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => handleSendVaccineReminder(vaccinations.indexOf(vaccination))}
-                                                        className="text-blue-600 hover:text-blue-700 transition-colors p-2"
+                                                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors p-2"
                                                         aria-label="Send reminder"
                                                         title="Send reminder email"
                                                     >
@@ -314,7 +314,7 @@ export default function VaccineHistory() {
                                                     <button
                                                         onClick={() => handleDeleteVaccination(vaccinations.indexOf(vaccination))}
                                                         disabled={deleting === `vac-${vaccinations.indexOf(vaccination)}`}
-                                                        className="text-red-600 hover:text-red-700 transition-colors p-2"
+                                                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2"
                                                         aria-label="Delete"
                                                     >
                                                         <Trash2 size={18} />
@@ -330,22 +330,22 @@ export default function VaccineHistory() {
                         {/* Completed Vaccines */}
                         {completedVaccines.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Vaccination Records</h2>
+                                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Vaccination Records</h2>
                                 <div className="space-y-4">
                                     {completedVaccines.map((vaccination, index) => (
-                                        <div key={dueVaccines.length + upcomingVaccines.length + index} className="rounded-2xl border border-gray-200/80 bg-white p-6">
+                                        <div key={dueVaccines.length + upcomingVaccines.length + index} className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 bg-white dark:bg-[#242526] p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow">
                                             <div className="flex items-start justify-between gap-4">
                                                 <div className="flex-1">
-                                                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{vaccination.vaccine}</h3>
+                                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{vaccination.vaccine}</h3>
                                                     <div className="space-y-2 text-sm">
                                                         <div>
-                                                            <p className="text-xs uppercase tracking-wide text-gray-500">Date Given</p>
-                                                            <p className="text-gray-900 mt-1">{formatDate(vaccination.date)}</p>
+                                                            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Date Given</p>
+                                                            <p className="text-gray-900 dark:text-white mt-1">{formatDate(vaccination.date)}</p>
                                                         </div>
                                                         {vaccination.nextDue && (
                                                             <div>
-                                                                <p className="text-xs uppercase tracking-wide text-gray-500">Next Due</p>
-                                                                <p className="text-gray-600 mt-1">{formatDate(vaccination.nextDue)}</p>
+                                                                <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Next Due</p>
+                                                                <p className="text-gray-600 dark:text-gray-300 mt-1">{formatDate(vaccination.nextDue)}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -353,7 +353,7 @@ export default function VaccineHistory() {
                                                 <button
                                                     onClick={() => handleDeleteVaccination(vaccinations.indexOf(vaccination))}
                                                     disabled={deleting === `vac-${vaccinations.indexOf(vaccination)}`}
-                                                    className="text-red-600 hover:text-red-700 transition-colors p-2"
+                                                    className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors p-2"
                                                     aria-label="Delete"
                                                 >
                                                     <Trash2 size={18} />
