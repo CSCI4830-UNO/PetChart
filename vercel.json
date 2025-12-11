@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/notifications/check-upcoming-appointments",
+      "schedule": "0 8,18 * * *"
+    },
+    {
+      "path": "/api/notifications/check-upcoming-vaccinations",
+      "schedule": "0 8,18 * * *"
+    },
+    {
+      "path": "/api/notifications/check-upcoming-flea-tick-treatments",
+      "schedule": "0 8,18 * * *"
+    }
+  ]
+}

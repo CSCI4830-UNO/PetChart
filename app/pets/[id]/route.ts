@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import Pet from "@/models/Pet";
-import { connectToDB } from "@/app/lib/db";
+import dbConnect from "@/lib/mongoose";
 import { Types } from "mongoose";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"; // adjust path
+import { authConfig } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,8 +13,8 @@ function notFound() {
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   try {
-    await connectToDB();
-    const session = await getServerSession(authOptions);
+    await dbConnect();
+    const session = await getServerSession(authConfig) as any;
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

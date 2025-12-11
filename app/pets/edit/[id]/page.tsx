@@ -31,7 +31,7 @@ interface Pet {
   microchipId?: string;
   birthday?: string;
   notes?: string;
-  photos?: string[]; // ⬅️ use array to match your model
+  photos?: string[];
 }
 
 export default function EditPet() {
@@ -53,7 +53,7 @@ export default function EditPet() {
     microchipId: "",
     birthday: "",
     notes: "",
-    photos: [] as string[], // ⬅️ store photos here
+    photos: [] as string[], // store photos here
   });
   const [isUploading, setIsUploading] = useState(false);
 
@@ -82,7 +82,7 @@ export default function EditPet() {
               ? new Date(pet.birthday).toISOString().split("T")[0]
               : "",
             notes: pet.notes || "",
-            photos: Array.isArray(pet.photos) ? pet.photos : [], // ⬅️ hydrate photos array
+            photos: Array.isArray(pet.photos) ? pet.photos : [],
           });
         } else if (response.status === 404) {
           toast.error("Pet not found");
@@ -135,7 +135,7 @@ export default function EditPet() {
         microchipId: formData.microchipId || undefined,
         birthday: formData.birthday || undefined,
         notes: formData.notes || undefined,
-        photos: formData.photos, // ⬅️ send the array to the API
+        photos: formData.photos,
       };
 
       const res = await fetch(`/api/pets/${petId}`, {
@@ -207,10 +207,10 @@ export default function EditPet() {
 
   if (status === "loading" || loadingPet) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading pet information...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-700">Loading pet information...</p>
         </div>
       </div>
     );
@@ -218,44 +218,55 @@ export default function EditPet() {
 
   if (!session) return null;
 
-  const primaryPhoto = formData.photos[0]; // ⬅️ convenience variable
+  const primaryPhoto = formData.photos[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-[#f5f5f7] text-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-6">
-            <Button variant="ghost" onClick={() => router.back()} className="mr-4">
-              <ArrowLeft size={20} className="mr-2" />
-              Back
-            </Button>
+      <header className="sticky top-0 z-20 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-start justify-between py-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <PawPrint size={24} className="text-white" />
-              </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Pet</h1>
-                <p className="text-sm text-gray-600">
-                  Update {formData.name}&apos;s information
-                </p>
+                <h1 className="text-2xl font-semibold tracking-tight">Edit Pet</h1>
+                <p className="text-sm text-gray-500">Update {formData.name}&apos;s details</p>
               </div>
             </div>
+            <button
+              onClick={() => router.back()}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-2"
+              aria-label="Close"
+            >
+              <ArrowLeft size={24} strokeWidth={1.5} />
+            </button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-8">
+        <div className="mb-8 flex flex-col gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-sm uppercase tracking-[0.16em] text-gray-500">Care</p>
+              <h2 className="text-3xl font-semibold tracking-tight">Update {formData.name || "your pet"}</h2>
+            </div>
+            <div className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm">
+              {formData.species ? `${getSpeciesEmoji(formData.species)} ${formData.species}` : "Choose a species"}
+            </div>
+          </div>
+          <div className="h-1 w-16 rounded-full bg-gray-900"></div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Left Column */}
             <div className="space-y-6">
               {/* Basic Info */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PawPrint size={20} className="text-blue-600" />
+              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <PawPrint size={20} className="text-gray-900" />
                     Basic Information
                   </CardTitle>
                 </CardHeader>
@@ -269,6 +280,7 @@ export default function EditPet() {
                         onChange={(e) => handleInputChange("name", e.target.value)}
                         placeholder="e.g., Bella, Max, Whiskers"
                         required
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
 
@@ -278,20 +290,40 @@ export default function EditPet() {
                         value={formData.species}
                         onValueChange={(value) => handleInputChange("species", value)}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-xl border-gray-200 bg-white h-12 text-gray-900">
                           <SelectValue placeholder="Choose species" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white">
-                          <SelectItem value="Dog">🐕 Dog</SelectItem>
-                          <SelectItem value="Cat">🐱 Cat</SelectItem>
-                          <SelectItem value="Bird">🐦 Bird</SelectItem>
-                          <SelectItem value="Rabbit">🐰 Rabbit</SelectItem>
-                          <SelectItem value="Fish">🐠 Fish</SelectItem>
-                          <SelectItem value="Hamster">🐹 Hamster</SelectItem>
-                          <SelectItem value="Guinea Pig">🐹 Guinea Pig</SelectItem>
-                          <SelectItem value="Reptile">🦎 Reptile</SelectItem>
-                          <SelectItem value="Horse">🐴 Horse</SelectItem>
-                          <SelectItem value="Other">🐾 Other</SelectItem>
+                        <SelectContent className="bg-white shadow-lg border border-gray-200 rounded-xl">
+                          <SelectItem value="Dog" className="cursor-pointer">
+                            🐕 Dog
+                          </SelectItem>
+                          <SelectItem value="Cat" className="cursor-pointer">
+                            🐱 Cat
+                          </SelectItem>
+                          <SelectItem value="Bird" className="cursor-pointer">
+                            🐦 Bird
+                          </SelectItem>
+                          <SelectItem value="Rabbit" className="cursor-pointer">
+                            🐰 Rabbit
+                          </SelectItem>
+                          <SelectItem value="Fish" className="cursor-pointer">
+                            🐠 Fish
+                          </SelectItem>
+                          <SelectItem value="Hamster" className="cursor-pointer">
+                            🐹 Hamster
+                          </SelectItem>
+                          <SelectItem value="Guinea Pig" className="cursor-pointer">
+                            🐹 Guinea Pig
+                          </SelectItem>
+                          <SelectItem value="Reptile" className="cursor-pointer">
+                            🦎 Reptile
+                          </SelectItem>
+                          <SelectItem value="Horse" className="cursor-pointer">
+                            🐴 Horse
+                          </SelectItem>
+                          <SelectItem value="Other" className="cursor-pointer">
+                            🐾 Other
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -303,6 +335,7 @@ export default function EditPet() {
                         value={formData.breed}
                         onChange={(e) => handleInputChange("breed", e.target.value)}
                         placeholder="e.g., Golden Retriever, Siamese, Parakeet"
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
 
@@ -313,6 +346,7 @@ export default function EditPet() {
                         value={formData.color}
                         onChange={(e) => handleInputChange("color", e.target.value)}
                         placeholder="e.g., Golden, Black and White, Tabby"
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -320,10 +354,10 @@ export default function EditPet() {
               </Card>
 
               {/* Age & Physical Details */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar size={20} className="text-green-600" />
+              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Calendar size={20} className="text-gray-900" />
                     Age & Physical Details
                   </CardTitle>
                 </CardHeader>
@@ -337,6 +371,7 @@ export default function EditPet() {
                         value={formData.birthday}
                         onChange={(e) => handleInputChange("birthday", e.target.value)}
                         max={new Date().toISOString().split("T")[0]}
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                       <p className="text-xs text-gray-500 mt-1">
                         If provided, age will be calculated automatically
@@ -355,6 +390,7 @@ export default function EditPet() {
                         min="0"
                         max="50"
                         disabled={!!formData.birthday}
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 disabled:bg-gray-50"
                       />
                       {formData.birthday && (
                         <p className="text-xs text-green-600 mt-1">
@@ -373,6 +409,7 @@ export default function EditPet() {
                         placeholder="e.g., 65"
                         step="0.1"
                         min="0"
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
 
@@ -383,6 +420,7 @@ export default function EditPet() {
                         value={formData.microchipId}
                         onChange={(e) => handleInputChange("microchipId", e.target.value)}
                         placeholder="e.g., 123456789012345"
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -393,9 +431,9 @@ export default function EditPet() {
             {/* Right Column */}
             <div className="space-y-6">
               {/* Notes + Photo Upload */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Additional Information</CardTitle>
+              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg">Additional Information</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -407,6 +445,7 @@ export default function EditPet() {
                         onChange={(e) => handleInputChange("notes", e.target.value)}
                         placeholder="Any special information about your pet - personality, medical conditions, favorite activities, etc."
                         rows={5}
+                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
 
@@ -426,15 +465,15 @@ export default function EditPet() {
               </Card>
 
               {/* Preview */}
-              <Card className="sticky top-6">
-                <CardHeader>
-                  <CardTitle>Pet Preview</CardTitle>
+              <Card className="sticky top-6 rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg">Pet Preview</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {/* Show uploaded image if present */}
                     {primaryPhoto && (
-                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg ring-1 ring-gray-200">
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl ring-1 ring-gray-200">
                         <Image
                           src={primaryPhoto}
                           alt={formData.name || "Pet photo"}
@@ -447,12 +486,8 @@ export default function EditPet() {
 
                     {formData.name && (
                       <div className="text-center">
-                        <div className="text-4xl mb-2">
-                          {getSpeciesEmoji(formData.species)}
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {formData.name}
-                        </h3>
+                        <div className="text-4xl mb-2">{getSpeciesEmoji(formData.species)}</div>
+                        <h3 className="text-xl font-semibold">{formData.name}</h3>
                         {formData.breed && formData.species && (
                           <p className="text-gray-600">
                             {formData.breed} {formData.species}
@@ -491,9 +526,7 @@ export default function EditPet() {
                     {formData.microchipId && (
                       <div>
                         <h4 className="font-medium text-gray-900">Microchip</h4>
-                        <p className="text-gray-600 font-mono text-sm">
-                          {formData.microchipId}
-                        </p>
+                        <p className="text-gray-600 font-mono text-sm">{formData.microchipId}</p>
                       </div>
                     )}
                   </div>
@@ -503,12 +536,13 @@ export default function EditPet() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-between items-center pt-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4">
             <Button
               type="button"
               variant="destructive"
               onClick={handleDelete}
               disabled={deleting}
+              className="rounded-full px-5"
             >
               {deleting ? (
                 <>
@@ -523,14 +557,19 @@ export default function EditPet() {
               )}
             </Button>
 
-            <div className="flex space-x-4">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                className="rounded-full border-gray-200 text-gray-800 hover:bg-gray-100"
+              >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={loading || isUploading || !formData.name || !formData.species}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="rounded-full bg-gray-900 px-6 text-white hover:bg-black"
               >
                 {loading ? "Updating..." : isUploading ? "Uploading…" : "Update Pet"}
               </Button>

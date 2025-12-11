@@ -67,15 +67,14 @@ export default function NavBar() {
         <div className="hidden md:flex gap-3 items-center">
           {session && session.user ? (
             <>
-              {session.user.image && (
-                <Image
-                  src={session.user.image}
-                  alt={session.user.name || "User avatar"}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 rounded-full"
-                />
-              )}
+              {/* might add avatar later */}
+              <Link
+                href="/settings"
+                className="text-sm px-3 py-1.5 rounded-lg text-slate-900 hover:bg-slate-100 transition-colors"
+                title="Settings"
+              >
+                ⚙️
+              </Link>
               <SignOutBtn />
             </>
           ) : (
@@ -121,7 +120,12 @@ export default function NavBar() {
               </Link>
 
               {session && session.user ? (
-                <SignOutBtn />
+                <>
+                  <Link href="/settings" onClick={() => toggleMenu(false)} className="hover:text-black">
+                    Settings
+                  </Link>
+                  <SignOutBtn />
+                </>
               ) : (
                 <Link
                   href="/api/auth/signin"

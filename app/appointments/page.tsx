@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MapPin, Plus, Edit3, Trash2, PawPrint } from "lucide-react";
+import { Calendar, Clock, MapPin, Plus, Edit3, Trash2, PawPrint, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface Appointment {
@@ -114,6 +114,28 @@ export default function Appointments() {
         }
     };
 
+    const handleSendReminder = async (appointmentId: string) => {
+        try {
+            const response = await fetch("/api/notifications/send-appointment-reminder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ appointmentId }),
+            });
+
+            if (response.ok) {
+                toast.success("Reminder sent successfully!");
+            } else {
+                const error = await response.json();
+                toast.error(error.error || "Failed to send reminder");
+            }
+        } catch (error) {
+            console.error("Error sending reminder:", error);
+            toast.error("Failed to send reminder");
+        }
+    };
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("en-US", {
             weekday: "long",
@@ -132,8 +154,16 @@ export default function Appointments() {
     };
 
     const isUpcoming = (dateString: string, timeString: string) => {
-        const appointmentDateTime = new Date(`${dateString}T${timeString}`);
-        return appointmentDateTime > new Date();
+        // Parse the date string - handle both ISO format and simple date format
+        const datePart = dateString.split('T')[0]; // Get just the date part if ISO format
+        const appointmentDateTime = new Date(`${datePart}T${timeString}`);
+        const now = new Date();
+        
+        // Compare dates in local timezone to avoid offset issues
+        appointmentDateTime.setHours(appointmentDateTime.getHours(), appointmentDateTime.getMinutes(), 0, 0);
+        now.setHours(now.getHours(), now.getMinutes(), 0, 0);
+        
+        return appointmentDateTime > now;
     };
 
     const getStatusColor = (status: string) => {
@@ -156,9 +186,9 @@ export default function Appointments() {
         
         switch (filter) {
             case 'upcoming':
-                return upcoming && appointment.status === 'scheduled';
+                return upcoming;
             case 'past':
-                return !upcoming || appointment.status !== 'scheduled';
+                return !upcoming;
             default:
                 return true;
         }
@@ -166,7 +196,7 @@ export default function Appointments() {
 
     if (status === "loading" || loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+            <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                     <p className="text-gray-600">Loading appointments...</p>
@@ -180,66 +210,65 @@ export default function Appointments() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="min-h-screen bg-[#f5f5f7]">
             {/* Header */}
-            <header className="bg-white shadow-sm border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div className="flex items-center gap-3">
-                            <Button
-                                variant="ghost"
-                                onClick={() => router.push("/")}
-                                className="mr-2"
-                            >
-                                <PawPrint size={20} className="mr-2" />
-                                Back to Dashboard
-                            </Button>
-                            <div>
-                                <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-                                <p className="text-sm text-gray-600">Manage your pet appointments</p>
-                            </div>
+            <header className="sticky top-0 z-40 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+                <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div className="flex items-start justify-between py-6">
+                        <div>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Appointments</h1>
+                            <p className="text-sm text-gray-600 mt-1">Manage and schedule your pet's visits</p>
                         </div>
-                        <Button
-                            onClick={() => router.push("/appointments/schedule")}
-                            className="bg-blue-600 hover:bg-blue-700"
-                        >
-                            <Plus size={20} className="mr-2" />
-                            Schedule Appointment
-                        </Button>
+                        <div className="flex items-center gap-4">
+                            <Button
+                                onClick={() => router.push("/appointments/schedule")}
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                            >
+                                <Plus size={18} className="mr-2" />
+                                Schedule
+                            </Button>
+                            <button
+                                onClick={() => router.push("/")}
+                                className="text-gray-400 hover:text-gray-600 transition-colors p-2"
+                                aria-label="Close"
+                            >
+                                <ArrowLeft size={24} strokeWidth={1.5} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <main className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
                 {/* Filter Tabs */}
-                <div className="flex space-x-1 mb-6 bg-gray-100 rounded-lg p-1">
+                <div className="flex gap-2 mb-8 border-b border-gray-200/50 pb-4">
                     <button
                         onClick={() => setFilter('upcoming')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'upcoming'
-                                ? 'bg-white text-blue-600 shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-gray-900 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                     >
                         Upcoming
                     </button>
                     <button
                         onClick={() => setFilter('past')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'past'
-                                ? 'bg-white text-blue-600 shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-gray-900 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                     >
                         Past
                     </button>
                     <button
                         onClick={() => setFilter('all')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'all'
-                                ? 'bg-white text-blue-600 shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900'
+                                ? 'bg-gray-900 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                     >
                         All
@@ -248,10 +277,10 @@ export default function Appointments() {
 
                 {/* Appointments List */}
                 {filteredAppointments.length === 0 ? (
-                    <div className="text-center py-12">
-                        <Calendar size={64} className="mx-auto text-gray-300 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">No appointments found</h3>
-                        <p className="text-gray-500 mb-4">
+                    <div className="text-center py-20">
+                        <div className="text-6xl mb-4">📅</div>
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">No appointments</h3>
+                        <p className="text-gray-600 mb-8">
                             {filter === 'upcoming' 
                                 ? "You don't have any upcoming appointments."
                                 : filter === 'past'
@@ -261,96 +290,112 @@ export default function Appointments() {
                         </p>
                         <Button
                             onClick={() => router.push("/appointments/schedule")}
-                            className="bg-blue-600 hover:bg-blue-700"
+                            className="bg-gray-900 hover:bg-black text-white rounded-full px-6"
                         >
-                            <Plus size={20} className="mr-2" />
+                            <Plus size={18} className="mr-2" />
                             Schedule Your First Appointment
                         </Button>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         {filteredAppointments.map((appointment) => (
-                            <Card key={appointment._id} className="hover:shadow-md transition-shadow">
-                                <CardContent className="p-6">
-                                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                                        {/* Left side - Appointment Info */}
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-3">
-                                                <h3 className="text-lg font-semibold text-gray-900">
-                                                    {appointment.petName}
-                                                </h3>
-                                                <Badge className={getStatusColor(appointment.status)}>
-                                                    {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                                                </Badge>
-                                            </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-                                                <div className="flex items-center gap-2">
-                                                    <Calendar size={16} />
-                                                    <span>{formatDate(appointment.appointmentDate)}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <Clock size={16} />
-                                                    <span>{formatTime(appointment.appointmentTime)}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <MapPin size={16} />
-                                                    <span>{appointment.location}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-medium">Reason:</span>
-                                                    <span>{appointment.reason}</span>
-                                                </div>
-                                            </div>
-                                            {appointment.notes && (
-                                                <p className="text-sm text-gray-600 bg-gray-50 p-2 rounded">
-                                                    <span className="font-medium">Notes:</span> {appointment.notes}
-                                                </p>
-                                            )}
+                            <div key={appointment._id} className="rounded-2xl border border-gray-200/80 bg-white p-6 shadow-sm hover:shadow-md transition-all">
+                                <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+                                    {/* Left side - Appointment Info */}
+                                    <div className="space-y-4 flex-1">
+                                        <div className="flex items-center gap-3">
+                                            <h3 className="text-xl font-semibold text-gray-900">
+                                                {appointment.petName}
+                                            </h3>
+                                            <Badge className={`${getStatusColor(appointment.status)} rounded-full px-3 py-1 text-xs font-medium`}>
+                                                {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                                            </Badge>
                                         </div>
-
-                                        {/* Right side - Actions */}
-                                        <div className="flex flex-col gap-2 lg:items-end">
-                                            {appointment.status === 'scheduled' && isUpcoming(appointment.appointmentDate, appointment.appointmentTime) && (
-                                                <div className="flex gap-2">
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        onClick={() => handleUpdateStatus(appointment._id, 'completed')}
-                                                    >
-                                                        Mark Complete
-                                                    </Button>
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        onClick={() => handleUpdateStatus(appointment._id, 'cancelled')}
-                                                    >
-                                                        Cancel
-                                                    </Button>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-3 text-sm">
+                                                <Calendar size={18} className="text-gray-400" />
+                                                <div>
+                                                    <p className="text-gray-600">{formatDate(appointment.appointmentDate)}</p>
                                                 </div>
-                                            )}
-                                            <div className="flex gap-2">
+                                            </div>
+                                            <div className="flex items-center gap-3 text-sm">
+                                                <Clock size={18} className="text-gray-400" />
+                                                <div>
+                                                    <p className="text-gray-600">{formatTime(appointment.appointmentTime)}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3 text-sm">
+                                                <MapPin size={18} className="text-gray-400" />
+                                                <div>
+                                                    <p className="text-gray-600">{appointment.location}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-sm">
+                                                <p className="text-gray-500 text-xs uppercase tracking-wide">Reason</p>
+                                                <p className="text-gray-900 font-medium">{appointment.reason}</p>
+                                            </div>
+                                        </div>
+                                        {appointment.notes && (
+                                            <div className="text-sm">
+                                                <p className="text-gray-500 text-xs uppercase tracking-wide">Notes</p>
+                                                <p className="text-gray-600">{appointment.notes}</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Right side - Actions */}
+                                    <div className="flex flex-col gap-2 lg:items-end">
+                                        {appointment.status === 'scheduled' && isUpcoming(appointment.appointmentDate, appointment.appointmentTime) && (
+                                            <div className="flex gap-2 flex-wrap lg:flex-nowrap justify-end">
                                                 <Button
-                                                    variant="ghost"
                                                     size="sm"
-                                                    onClick={() => router.push(`/appointments/edit/${appointment._id}`)}
+                                                    onClick={() => handleUpdateStatus(appointment._id, 'completed')}
+                                                    className="bg-green-100 text-green-700 hover:bg-green-200 rounded-lg text-xs"
                                                 >
-                                                    <Edit3 size={16} className="mr-1" />
-                                                    Edit
+                                                    Complete
                                                 </Button>
                                                 <Button
-                                                    variant="ghost"
                                                     size="sm"
-                                                    onClick={() => handleDeleteAppointment(appointment._id)}
-                                                    className="text-red-600 hover:text-red-700"
+                                                    onClick={() => handleUpdateStatus(appointment._id, 'cancelled')}
+                                                    className="bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-xs"
                                                 >
-                                                    <Trash2 size={16} className="mr-1" />
-                                                    Delete
+                                                    Cancel
                                                 </Button>
                                             </div>
+                                        )}
+                                        <div className="flex gap-2 justify-end">
+                                            {appointment.status === 'scheduled' && isUpcoming(appointment.appointmentDate, appointment.appointmentTime) && (
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleSendReminder(appointment._id)}
+                                                    className="text-blue-600 hover:text-blue-700 rounded-lg text-xs"
+                                                >
+                                                    📧 Remind
+                                                </Button>
+                                            )}
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => router.push(`/appointments/edit/${appointment._id}`)}
+                                                className="text-gray-600 hover:text-gray-900 rounded-lg text-xs"
+                                            >
+                                                <Edit3 size={14} className="mr-1" />
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleDeleteAppointment(appointment._id)}
+                                                className="text-red-600 hover:text-red-700 rounded-lg text-xs"
+                                            >
+                                                <Trash2 size={14} className="mr-1" />
+                                                Delete
+                                            </Button>
                                         </div>
                                     </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 )}

@@ -6,7 +6,7 @@ import { Pet } from "@/models/Pet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Calendar, Weight, Palette, Stethoscope } from "lucide-react";
+import { Heart, Calendar, Weight, Palette, Stethoscope, Bug } from "lucide-react";
 
 interface PetCardProps {
   // dateAdded from Mongo will often be a string after JSON serialize
@@ -21,6 +21,14 @@ export function PetCard({ pet }: PetCardProps) {
     (Array.isArray((pet as any).photos) && (pet as any).photos[0]) ||
     (pet as any).photoUrl ||
     "";
+
+  const fleaTickTreatments = pet.medicalHistory?.fleaTickTreatments || [];
+  const nextFleaTickDue =
+    fleaTickTreatments
+      .map((t) => (t.nextDue ? new Date(t.nextDue as any) : null))
+      .filter(Boolean)
+      .sort((a, b) => (a as Date).getTime() - (b as Date).getTime())[0] || undefined;
+  const lastFleaTick = fleaTickTreatments[fleaTickTreatments.length - 1];
 
   const getSpeciesEmoji = (species: string) => {
     switch (species?.toLowerCase?.()) {
@@ -136,21 +144,39 @@ export function PetCard({ pet }: PetCardProps) {
 
           {/* Medical History Summary */}
           <div className="space-y-2">
-            <h4 className="font-semibold text-gray-700 flex items-center gap-2">
+            <h4 className="font-semibold text-gray-700 mb-2">
               <Stethoscope size={16} className="text-green-500" />
               Medical Summary
             </h4>
             <div className="space-y-1 text-sm">
-              <div>
-                Vaccinations: {pet.medicalHistory?.vaccinations?.length || 0}
-              </div>
+              <div>Vaccinations: {pet.medicalHistory?.vaccinations?.length || 0}</div>
               <div>Treatments: {pet.medicalHistory?.treatments?.length || 0}</div>
-              <div>
-                Medications: {pet.medicalHistory?.medications?.length || 0}
-              </div>
+              <div>Medications: {pet.medicalHistory?.medications?.length || 0}</div>
+              <div>Flea & Tick: {fleaTickTreatments.length}</div>
             </div>
           </div>
         </div>
+
+        {/* Flea & Tick summary */}
+        {fleaTickTreatments.length > 0 && (
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <Bug size={16} className="text-amber-600" />
+              Flea & Tick
+            </h4>
+            <div className="space-y-1 text-sm">
+              {lastFleaTick && (
+                <div className="bg-amber-50 p-2 rounded border border-amber-200">
+                  <span className="font-medium">Last: {lastFleaTick.treatment}</span>
+                  <span className="text-gray-600 ml-2">{formatDate(lastFleaTick.date as any)}</span>
+                </div>
+              )}
+              {nextFleaTickDue && (
+                <div className="text-amber-700">Next due: {formatDate(nextFleaTickDue)}</div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Recent Vaccinations */}
         {pet.medicalHistory?.vaccinations?.length > 0 && (
@@ -219,20 +245,38 @@ export function PetCard({ pet }: PetCardProps) {
 
         {/* Hover actions */}
         <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <div className="flex gap-2 bg-white/90 backdrop-blur-sm p-3 rounded-lg border shadow-lg">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-white/95 backdrop-blur-sm p-3 rounded-lg border shadow-md">
             <Button
               variant="outline"
               size="sm"
               onClick={() => router.push(`/pets/edit/${(pet as any)._id}`)}
-              className="flex-1"
+              className="w-full justify-center"
             >
               Edit Pet
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
-              Add Record
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/medications/${(pet as any)._id}`)}
+              className="w-full justify-center"
+            >
+              View Meds
             </Button>
-            <Button variant="outline" size="sm" className="flex-1">
-              View History
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/vaccines/${(pet as any)._id}`)}
+              className="w-full justify-center"
+            >
+              View Vaccines
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/flea-tick-treatments/${(pet as any)._id}`)}
+              className="w-full justify-center"
+            >
+              Flea & Tick
             </Button>
           </div>
         </div>

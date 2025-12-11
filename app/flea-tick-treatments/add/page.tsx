@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Pill, ArrowLeft } from "lucide-react";
+import { Bug, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 interface Pet {
@@ -19,17 +19,16 @@ interface Pet {
   breed?: string;
 }
 
-export default function AddMedication() {
+export default function AddFleaTickTreatment() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     petId: "",
-    medication: "",
-    dosage: "",
-    startDate: "",
-    endDate: "",
+    treatment: "",
+    date: "",
+    nextDue: "",
     notes: ""
   });
 
@@ -48,6 +47,9 @@ export default function AddMedication() {
         if (res.ok) {
           const data = await res.json();
           setPets(data);
+          if (data.length > 0) {
+            setFormData(prev => ({ ...prev, petId: data[0]._id }));
+          }
         } else {
           toast.error('Failed to load pets');
         }
@@ -69,33 +71,32 @@ export default function AddMedication() {
     setLoading(true);
 
     try {
-      if (!formData.petId || !formData.medication || !formData.dosage || !formData.startDate) {
+      if (!formData.petId || !formData.treatment || !formData.date) {
         toast.error('Please fill required fields');
         return;
       }
 
-      const res = await fetch(`/api/pets/${formData.petId}/medications`, {
+      const res = await fetch(`/api/pets/${formData.petId}/flea-tick-treatments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          medication: formData.medication,
-          dosage: formData.dosage,
-          startDate: formData.startDate,
-          endDate: formData.endDate || undefined,
+          treatment: formData.treatment,
+          date: formData.date,
+          nextDue: formData.nextDue || undefined,
           notes: formData.notes || undefined
         })
       });
 
       if (res.ok) {
-        toast.success('Medication added');
-        router.push(`/medications/${formData.petId}`);
+        toast.success('Flea & tick treatment added');
+        router.push(`/flea-tick-treatments/${formData.petId}`);
       } else {
         const err = await res.json();
-        toast.error(err.error || 'Failed to add medication');
+        toast.error(err.error || 'Failed to add treatment');
       }
     } catch (err) {
       console.error(err);
-      toast.error('Failed to add medication');
+      toast.error('Failed to add treatment');
     } finally {
       setLoading(false);
     }
@@ -107,8 +108,8 @@ export default function AddMedication() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-start justify-between py-6">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Add Medication</h1>
-              <p className="text-sm text-gray-500 mt-1">Add a new medication for a pet</p>
+              <h1 className="text-2xl font-semibold tracking-tight">Add Flea & Tick Treatment</h1>
+              <p className="text-sm text-gray-500 mt-1">Record a treatment for a pet</p>
             </div>
             <button
               onClick={() => router.push("/")}
@@ -126,10 +127,10 @@ export default function AddMedication() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm uppercase tracking-[0.16em] text-gray-500">Health</p>
-              <h2 className="text-3xl font-semibold tracking-tight">Track Medications</h2>
+              <h2 className="text-3xl font-semibold tracking-tight">Track Flea & Tick Treatments</h2>
             </div>
             <div className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm">
-              💊 Medication
+              🐛 Flea & Tick
             </div>
           </div>
           <div className="h-1 w-16 rounded-full bg-gray-900"></div>
@@ -139,7 +140,7 @@ export default function AddMedication() {
           <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg">
-                Medication Details
+                Treatment Details
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -159,85 +160,72 @@ export default function AddMedication() {
                 </div>
 
                 <div>
-                  <Label htmlFor="medication">Medication *</Label>
+                  <Label htmlFor="treatment">Treatment Name *</Label>
                   <Input
-                    id="medication"
-                    value={formData.medication}
-                    onChange={(e) => handleInputChange('medication', e.target.value)}
+                    id="treatment"
+                    value={formData.treatment}
+                    onChange={(e) => handleInputChange('treatment', e.target.value)}
                     required
-                    placeholder="e.g., Amoxicillin"
-                    className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="dosage">Dosage *</Label>
-                  <Input
-                    id="dosage"
-                    value={formData.dosage}
-                    onChange={(e) => handleInputChange('dosage', e.target.value)}
-                    required
-                    placeholder="e.g., 5 mg once daily"
+                    placeholder="e.g., Frontline Plus, NexGard"
                     className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="startDate">Start Date *</Label>
+                    <Label htmlFor="date">Treatment Date *</Label>
                     <Input
-                      id="startDate"
+                      id="date"
                       type="date"
-                      value={formData.startDate}
-                      onChange={(e) => handleInputChange('startDate', e.target.value)}
+                      value={formData.date}
+                      onChange={(e) => handleInputChange('date', e.target.value)}
                       required
                       className="rounded-xl border-gray-200 bg-white text-gray-900"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="endDate">End Date (optional)</Label>
+                    <Label htmlFor="nextDue">Next Due Date (optional)</Label>
                     <Input
-                      id="endDate"
+                      id="nextDue"
                       type="date"
-                      value={formData.endDate}
-                      onChange={(e) => handleInputChange('endDate', e.target.value)}
+                      value={formData.nextDue}
+                      onChange={(e) => handleInputChange('nextDue', e.target.value)}
                       className="rounded-xl border-gray-200 bg-white text-gray-900"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="notes">Notes</Label>
+                  <Label htmlFor="notes">Notes (optional)</Label>
                   <Textarea
                     id="notes"
                     value={formData.notes}
                     onChange={(e) => handleInputChange('notes', e.target.value)}
-                    rows={3}
                     placeholder="Any additional information..."
-                    className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                    className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 min-h-[100px]"
                   />
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => router.push("/")}
-                    className="rounded-full border-gray-200 text-gray-800 hover:bg-gray-100"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="rounded-full bg-gray-900 px-6 text-white hover:bg-black"
-                    disabled={loading}
-                  >
-                    {loading ? 'Adding...' : 'Add Medication'}
-                  </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          <div className="flex gap-3 justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push("/")}
+              className="rounded-full px-8"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="rounded-full px-8 bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {loading ? 'Adding...' : 'Add Treatment'}
+            </Button>
+          </div>
         </form>
       </main>
     </div>

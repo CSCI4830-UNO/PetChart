@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,18 +20,35 @@ interface Pet {
     age: number;
 }
 
-export default function ScheduleAppointment() {
+interface Appointment {
+    _id: string;
+    petId: string;
+    appointmentDate: string;
+    appointmentTime: string;
+    location: string;
+    reason: string;
+    notes?: string;
+    status: string;
+}
+
+export default function EditAppointment() {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const params = useParams();
+    const appointmentId = params.id as string;
+    
     const [pets, setPets] = useState<Pet[]>([]);
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
+    const [fetching, setFetching] = useState(true);
+    const [formData, setFormData] = useState<Appointment>({
+        _id: "",
         petId: "",
         appointmentDate: "",
         appointmentTime: "",
         location: "",
         reason: "",
-        notes: ""
+        notes: "",
+        status: "scheduled"
     });
 
     // Redirect if not authenticated
@@ -63,6 +80,41 @@ export default function ScheduleAppointment() {
         fetchPets();
     }, [session]);
 
+    // Fetch appointment data
+    useEffect(() => {
+        const fetchAppointment = async () => {
+            if (!appointmentId) return;
+
+            try {
+                const response = await fetch(`/api/appointments/${appointmentId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setFormData({
+                        _id: data._id,
+                        petId: data.petId,
+                        appointmentDate: data.appointmentDate.split('T')[0],
+                        appointmentTime: data.appointmentTime,
+                        location: data.location,
+                        reason: data.reason,
+                        notes: data.notes || "",
+                        status: data.status
+                    });
+                } else {
+                    toast.error("Failed to load appointment");
+                    router.push("/appointments");
+                }
+            } catch (error) {
+                console.error("Error fetching appointment:", error);
+                toast.error("Failed to load appointment");
+                router.push("/appointments");
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        fetchAppointment();
+    }, [appointmentId, router]);
+
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({
             ...prev,
@@ -82,31 +134,31 @@ export default function ScheduleAppointment() {
                 return;
             }
 
-            // Validate date is in the future
-            const appointmentDateTime = new Date(`${formData.appointmentDate}T${formData.appointmentTime}`);
-            if (appointmentDateTime <= new Date()) {
-                toast.error("Appointment must be scheduled for a future date and time");
-                return;
-            }
-
-            const response = await fetch("/api/appointments", {
-                method: "POST",
+            const response = await fetch(`/api/appointments/${appointmentId}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    petId: formData.petId,
+                    appointmentDate: formData.appointmentDate,
+                    appointmentTime: formData.appointmentTime,
+                    location: formData.location,
+                    reason: formData.reason,
+                    notes: formData.notes
+                }),
             });
 
             if (response.ok) {
-                toast.success("Appointment scheduled successfully!");
+                toast.success("Appointment updated successfully!");
                 router.push("/appointments");
             } else {
                 const error = await response.json();
-                toast.error(error.error || "Failed to schedule appointment");
+                toast.error(error.error || "Failed to update appointment");
             }
         } catch (error) {
-            console.error("Error scheduling appointment:", error);
-            toast.error("Failed to schedule appointment");
+            console.error("Error updating appointment:", error);
+            toast.error("Failed to update appointment");
         } finally {
             setLoading(false);
         }
@@ -125,7 +177,7 @@ export default function ScheduleAppointment() {
         });
     };
 
-    if (status === "loading") {
+    if (status === "loading" || fetching) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
@@ -147,8 +199,8 @@ export default function ScheduleAppointment() {
                 <div className="max-w-4xl mx-auto px-6 lg:px-8">
                     <div className="flex items-start justify-between py-6">
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Schedule Appointment</h1>
-                            <p className="text-sm text-gray-600 mt-1">Book a future appointment for your pet</p>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Edit Appointment</h1>
+                            <p className="text-sm text-gray-600 mt-1">Update your appointment details</p>
                         </div>
                         <button
                             onClick={() => router.back()}
@@ -193,14 +245,7 @@ export default function ScheduleAppointment() {
                                     </div>
                                     {pets.length === 0 && (
                                         <div className="text-center py-8 bg-gray-50 rounded-lg">
-                                            <p className="text-gray-600 mb-4">No pets found. Add a pet first to schedule appointments.</p>
-                                            <Button
-                                                type="button"
-                                                onClick={() => router.push("/pets/add")}
-                                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
-                                            >
-                                                Add Pet
-                                            </Button>
+                                            <p className="text-gray-600 mb-4">No pets found.</p>
                                         </div>
                                     )}
                                 </div>
@@ -219,7 +264,6 @@ export default function ScheduleAppointment() {
                                             id="date"
                                             value={formData.appointmentDate}
                                             onChange={(e) => handleInputChange("appointmentDate", e.target.value)}
-                                            min={new Date().toISOString().split('T')[0]}
                                             required
                                             className="mt-2 rounded-lg border-gray-200"
                                         />
@@ -347,10 +391,10 @@ export default function ScheduleAppointment() {
                         </Button>
                         <Button
                             type="submit"
-                            disabled={loading || pets.length === 0}
+                            disabled={loading}
                             className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                         >
-                            {loading ? "Scheduling..." : "Schedule Appointment"}
+                            {loading ? "Updating..." : "Update Appointment"}
                         </Button>
                     </div>
                 </form>

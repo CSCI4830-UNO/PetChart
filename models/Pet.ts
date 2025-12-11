@@ -17,6 +17,7 @@ export interface Pet extends Document {
             vaccine: string;
             date: Date;
             nextDue?: Date;
+            lastReminderSent?: Date;
         }>;
         treatments: Array<{
             treatment: string;
@@ -29,6 +30,13 @@ export interface Pet extends Document {
             startDate: Date;
             endDate?: Date;
             notes?: string;
+        }>;
+        fleaTickTreatments: Array<{
+            treatment: string;
+            date: Date;
+            nextDue?: Date;
+            notes?: string;
+            lastReminderSent?: Date;
         }>;
     };
     photos?: string[];
@@ -52,7 +60,8 @@ const PetSchema = new Schema<Pet>(
             vaccinations: [{
                 vaccine: { type: String, required: true },
                 date: { type: Date, required: true },
-                nextDue: { type: Date }
+                nextDue: { type: Date },
+                lastReminderSent: { type: Date }
             }],
             treatments: [{
                 treatment: { type: String, required: true },
@@ -65,6 +74,13 @@ const PetSchema = new Schema<Pet>(
                 startDate: { type: Date, required: true },
                 endDate: { type: Date },
                 notes: { type: String }
+            }],
+            fleaTickTreatments: [{
+                treatment: { type: String, required: true },
+                date: { type: Date, required: true },
+                nextDue: { type: Date },
+                notes: { type: String },
+                lastReminderSent: { type: Date }
             }]
         },
         photos: [{ type: String }],
