@@ -127,10 +127,10 @@ export default function ScheduleAppointment() {
 
     if (status === "loading") {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
+            <div className="min-h-screen bg-white dark:bg-[#18191a] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading...</p>
                 </div>
             </div>
         );
@@ -141,14 +141,14 @@ export default function ScheduleAppointment() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-[#18191a]">
             {/* Header */}
-            <header className="sticky top-0 z-40 border-b border-gray-100/50 backdrop-blur-md bg-white/80">
+            <header className="sticky top-0 z-40 border-b border-gray-100 dark:border-[#3a3b3c]/50 backdrop-blur-md bg-white/80 dark:bg-[#242526]/80">
                 <div className="max-w-4xl mx-auto px-6 lg:px-8">
                     <div className="flex items-start justify-between py-6">
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Schedule Appointment</h1>
-                            <p className="text-sm text-gray-600 mt-1">Book a future appointment for your pet</p>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Schedule Appointment</h1>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Book a future appointment for your pet</p>
                         </div>
                         <button
                             onClick={() => router.back()}
@@ -168,9 +168,9 @@ export default function ScheduleAppointment() {
                         {/* Left Column - Form */}
                         <div className="lg:col-span-2 space-y-6">
                             {/* Pet Selection */}
-                            <div className="rounded-2xl border border-gray-100 p-6">
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] dark:bg-[#242526] p-6">
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Pet</h3>
                                 </div>
                                 <div className="space-y-4">
                                     <div>
@@ -179,10 +179,10 @@ export default function ScheduleAppointment() {
                                             value={formData.petId} 
                                             onValueChange={(value) => handleInputChange("petId", value)}
                                         >
-                                            <SelectTrigger className="mt-2 rounded-lg border-gray-200">
+                                            <SelectTrigger className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]">
                                                 <SelectValue placeholder="Choose a pet" />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-white shadow-lg border border-gray-200 rounded-lg">
+                                            <SelectContent className="bg-white dark:bg-[#18191a] dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] rounded-lg">
                                                 {pets.map((pet) => (
                                                         <SelectItem key={pet._id} value={pet._id} className="cursor-pointer">
                                                         {pet.name} - {pet.breed ? `${pet.breed} ` : ""}{pet.species}
@@ -192,8 +192,8 @@ export default function ScheduleAppointment() {
                                         </Select>
                                     </div>
                                     {pets.length === 0 && (
-                                        <div className="text-center py-8 bg-gray-50 rounded-lg">
-                                            <p className="text-gray-600 mb-4">No pets found. Add a pet first to schedule appointments.</p>
+                                        <div className="text-center py-8 bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] rounded-lg">
+                                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 mb-4">No pets found. Add a pet first to schedule appointments.</p>
                                             <Button
                                                 type="button"
                                                 onClick={() => router.push("/pets/add")}
@@ -207,9 +207,9 @@ export default function ScheduleAppointment() {
                             </div>
 
                             {/* Date & Time */}
-                            <div className="rounded-2xl border border-gray-100 p-6">
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6">
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-900">Date & Time</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white">Date & Time</h3>
                                 </div>
                                 <div className="space-y-4">
                                     <div>
@@ -221,7 +221,7 @@ export default function ScheduleAppointment() {
                                             onChange={(e) => handleInputChange("appointmentDate", e.target.value)}
                                             min={new Date().toISOString().split('T')[0]}
                                             required
-                                            className="mt-2 rounded-lg border-gray-200"
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
                                         />
                                     </div>
                                     <div>
@@ -232,16 +232,16 @@ export default function ScheduleAppointment() {
                                             value={formData.appointmentTime}
                                             onChange={(e) => handleInputChange("appointmentTime", e.target.value)}
                                             required
-                                            className="mt-2 rounded-lg border-gray-200"
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
                                         />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Location & Reason */}
-                            <div className="rounded-2xl border border-gray-100 p-6">
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6">
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-900">Details</h3>
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white">Details</h3>
                                 </div>
                                 <div className="space-y-4">
                                     <div>
@@ -253,7 +253,7 @@ export default function ScheduleAppointment() {
                                             onChange={(e) => handleInputChange("location", e.target.value)}
                                             placeholder="e.g., City Animal Hospital, 123 Main St"
                                             required
-                                            className="mt-2 rounded-lg border-gray-200"
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
                                         />
                                     </div>
                                     <div>
@@ -265,7 +265,7 @@ export default function ScheduleAppointment() {
                                             onChange={(e) => handleInputChange("reason", e.target.value)}
                                             placeholder="e.g., Annual checkup, Vaccination, Dental cleaning"
                                             required
-                                            className="mt-2 rounded-lg border-gray-200"
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
                                         />
                                     </div>
                                     <div>
@@ -276,7 +276,7 @@ export default function ScheduleAppointment() {
                                             onChange={(e) => handleInputChange("notes", e.target.value)}
                                             placeholder="Any additional information or special instructions..."
                                             rows={3}
-                                            className="mt-2 rounded-lg border-gray-200"
+                                            className="mt-2 rounded-lg border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c]"
                                         />
                                     </div>
                                 </div>
@@ -285,13 +285,13 @@ export default function ScheduleAppointment() {
 
                         {/* Right Column - Preview */}
                         <div>
-                            <div className="rounded-2xl border border-gray-100 p-6 bg-gray-50 sticky top-20">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Preview</h3>
+                            <div className="rounded-2xl border border-gray-100 dark:border-[#3a3b3c] p-6 bg-gray-50 dark:bg-[#242526] dark:bg-[#242526] dark:bg-[#242526] sticky top-20">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white dark:text-white mb-4">Preview</h3>
                                 <div className="space-y-4">
                                     {formData.petId && (
                                         <div>
                                             <p className="text-xs uppercase tracking-wide text-gray-500">Pet</p>
-                                            <p className="text-gray-900 font-medium mt-1">
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">
                                                 {pets.find(p => p._id === formData.petId)?.name || "Unknown"}
                                             </p>
                                         </div>
@@ -300,28 +300,28 @@ export default function ScheduleAppointment() {
                                     {formatDateTime() && (
                                         <div>
                                             <p className="text-xs uppercase tracking-wide text-gray-500">Date & Time</p>
-                                            <p className="text-gray-900 font-medium mt-1">{formatDateTime()}</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formatDateTime()}</p>
                                         </div>
                                     )}
                                     
                                     {formData.location && (
                                         <div>
                                             <p className="text-xs uppercase tracking-wide text-gray-500">Location</p>
-                                            <p className="text-gray-900 font-medium mt-1">{formData.location}</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formData.location}</p>
                                         </div>
                                     )}
                                     
                                     {formData.reason && (
                                         <div>
                                             <p className="text-xs uppercase tracking-wide text-gray-500">Reason</p>
-                                            <p className="text-gray-900 font-medium mt-1">{formData.reason}</p>
+                                            <p className="text-gray-900 dark:text-white dark:text-white font-medium mt-1">{formData.reason}</p>
                                         </div>
                                     )}
                                     
                                     {formData.notes && (
                                         <div>
                                             <p className="text-xs uppercase tracking-wide text-gray-500">Notes</p>
-                                            <p className="text-gray-600 text-sm mt-1">{formData.notes}</p>
+                                            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 text-sm mt-1">{formData.notes}</p>
                                         </div>
                                     )}
 
@@ -336,7 +336,7 @@ export default function ScheduleAppointment() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#3a3b3c]">
                         <Button
                             type="button"
                             variant="outline"
@@ -358,3 +358,5 @@ export default function ScheduleAppointment() {
         </div>
     );
 }
+
+

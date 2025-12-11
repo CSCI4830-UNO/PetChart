@@ -21,9 +21,11 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
+      theme: user.theme || "system",
       notificationPreferences: user.notificationPreferences || {
         appointmentReminders: true,
         vaccinationReminders: true,
+        fleaTickReminders: true,
       },
     });
   } catch (error) {
@@ -46,23 +48,25 @@ export async function PUT(request: NextRequest) {
     await dbConnect();
 
     const body = await request.json();
-    const { notificationPreferences } = body;
+    const { notificationPreferences, theme } = body;
 
-    if (!notificationPreferences) {
-      return NextResponse.json(
-        { error: "notificationPreferences is required" },
-        { status: 400 }
-      );
+    const updateData: any = {};
+    if (notificationPreferences) {
+      updateData.notificationPreferences = notificationPreferences;
+    }
+    if (theme && ["light", "dark", "system"].includes(theme)) {
+      updateData.theme = theme;
     }
 
     const user = await User.findOneAndUpdate(
       { email: session.user.email },
-      { notificationPreferences },
+      updateData,
       { new: true, upsert: true }
     );
 
     return NextResponse.json({
       success: true,
+      theme: user.theme,
       notificationPreferences: user.notificationPreferences,
     });
   } catch (error) {

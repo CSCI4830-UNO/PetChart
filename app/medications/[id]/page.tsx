@@ -139,10 +139,10 @@ export default function MedicationHistory() {
 
     if (status === "loading" || loading) {
         return (
-            <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
+            <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading...</p>
                 </div>
             </div>
         );
@@ -157,14 +157,14 @@ export default function MedicationHistory() {
     const inactiveMedications = medications.filter(m => !isActiveMedication(m));
 
     return (
-        <div className="min-h-screen bg-[#f5f5f7]">
+        <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a]">
             {/* Header */}
-            <header className="sticky top-0 z-40 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+            <header className="sticky top-0 z-40 border-b border-gray-200/70 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
                 <div className="max-w-4xl mx-auto px-6 lg:px-8">
                     <div className="flex items-start justify-between py-6">
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Medication History</h1>
-                            <p className="text-sm text-gray-600 mt-1">View and manage medications for {pet.name}</p>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Medication History</h1>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">View and manage medications for {pet.name}</p>
                         </div>
                         <button
                             onClick={() => router.back()}
@@ -182,8 +182,8 @@ export default function MedicationHistory() {
                 {medications.length === 0 ? (
                     <div className="text-center py-20">
                         <div className="text-6xl mb-4">💊</div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">No medications</h3>
-                        <p className="text-gray-600 mb-8">No medication records found for {pet.name}.</p>
+                        <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">No medications</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-8">No medication records found for {pet.name}.</p>
                         <Button
                             onClick={() => router.push(`/medications/add?petId=${petId}`)}
                             className="bg-gray-900 hover:bg-black text-white rounded-full px-6"
@@ -197,7 +197,7 @@ export default function MedicationHistory() {
                         {/* Active Medications */}
                         {activeMedications.length > 0 && (
                             <div>
-                                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Current Medications</h2>
+                                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Current Medications</h2>
                                 <div className="space-y-4">
                                     {activeMedications.map((medication, index) => (
                                         <div key={index} className="rounded-2xl border border-green-200/50 bg-green-50/50 p-6">

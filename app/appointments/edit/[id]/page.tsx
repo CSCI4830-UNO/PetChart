@@ -179,10 +179,10 @@ export default function EditAppointment() {
 
     if (status === "loading" || fetching) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
+            <div className="min-h-screen bg-white dark:bg-[#18191a] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading...</p>
                 </div>
             </div>
         );
@@ -193,14 +193,14 @@ export default function EditAppointment() {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-[#18191a]">
             {/* Header */}
-            <header className="sticky top-0 z-40 border-b border-gray-100/50 backdrop-blur-md bg-white/80">
+            <header className="sticky top-0 z-40 border-b border-gray-100/50 dark:border-[#3a3b3c]/50 backdrop-blur-md bg-white/80 dark:bg-[#242526]/80">
                 <div className="max-w-4xl mx-auto px-6 lg:px-8">
                     <div className="flex items-start justify-between py-6">
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Edit Appointment</h1>
-                            <p className="text-sm text-gray-600 mt-1">Update your appointment details</p>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Edit Appointment</h1>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Update your appointment details</p>
                         </div>
                         <button
                             onClick={() => router.back()}

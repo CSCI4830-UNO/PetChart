@@ -177,7 +177,7 @@ export default function Appointments() {
             case 'missed':
                 return 'bg-orange-100 text-orange-800 border-orange-200';
             default:
-                return 'bg-gray-100 text-gray-800 border-gray-200';
+                return 'bg-gray-100 dark:bg-[#3a3b3c] dark:bg-[#3a3b3c] text-gray-800 dark:text-gray-200 border-gray-200 dark:border-[#3a3b3c]';
         }
     };
 
@@ -196,10 +196,10 @@ export default function Appointments() {
 
     if (status === "loading" || loading) {
         return (
-            <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
+            <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] dark:bg-[#18191a] flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading appointments...</p>
+                    <p className="text-gray-600 dark:text-gray-400">Loading appointments...</p>
                 </div>
             </div>
         );
@@ -210,14 +210,14 @@ export default function Appointments() {
     }
 
     return (
-        <div className="min-h-screen bg-[#f5f5f7]">
+        <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] dark:bg-[#18191a]">
             {/* Header */}
-            <header className="sticky top-0 z-40 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+            <header className="sticky top-0 z-40 border-b border-gray-200 dark:border-[#3a3b3c] bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
                     <div className="flex items-start justify-between py-6">
                         <div>
-                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">Appointments</h1>
-                            <p className="text-sm text-gray-600 mt-1">Manage and schedule your pet's visits</p>
+                            <h1 className="text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white">Appointments</h1>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Manage and schedule your pet's visits</p>
                         </div>
                         <div className="flex items-center gap-4">
                             <Button
@@ -229,7 +229,7 @@ export default function Appointments() {
                             </Button>
                             <button
                                 onClick={() => router.push("/")}
-                                className="text-gray-400 hover:text-gray-600 transition-colors p-2"
+                                className="text-gray-400 hover:text-gray-600 dark:text-gray-400 transition-colors p-2"
                                 aria-label="Close"
                             >
                                 <ArrowLeft size={24} strokeWidth={1.5} />
@@ -242,13 +242,13 @@ export default function Appointments() {
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
                 {/* Filter Tabs */}
-                <div className="flex gap-2 mb-8 border-b border-gray-200/50 pb-4">
+                <div className="flex gap-2 mb-8 border-b border-gray-200 dark:border-[#3a3b3c] pb-4">
                     <button
                         onClick={() => setFilter('upcoming')}
                         className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'upcoming'
-                                ? 'bg-gray-900 text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-gray-900 dark:bg-blue-600 text-white'
+                                : 'bg-gray-100 dark:bg-[#3a3b3c] dark:bg-[#3a3b3c] dark:bg-[#242526] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#3a3b3c]'
                         }`}
                     >
                         Upcoming
@@ -257,8 +257,8 @@ export default function Appointments() {
                         onClick={() => setFilter('past')}
                         className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'past'
-                                ? 'bg-gray-900 text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-gray-900 dark:bg-blue-600 text-white'
+                                : 'bg-gray-100 dark:bg-[#3a3b3c] dark:bg-[#3a3b3c] dark:bg-[#242526] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#3a3b3c]'
                         }`}
                     >
                         Past
@@ -267,8 +267,8 @@ export default function Appointments() {
                         onClick={() => setFilter('all')}
                         className={`px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                             filter === 'all'
-                                ? 'bg-gray-900 text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-gray-900 dark:bg-blue-600 text-white'
+                                : 'bg-gray-100 dark:bg-[#3a3b3c] dark:bg-[#3a3b3c] dark:bg-[#242526] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#3a3b3c]'
                         }`}
                     >
                         All
@@ -279,8 +279,8 @@ export default function Appointments() {
                 {filteredAppointments.length === 0 ? (
                     <div className="text-center py-20">
                         <div className="text-6xl mb-4">📅</div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-2">No appointments</h3>
-                        <p className="text-gray-600 mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">No appointments</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-8">
                             {filter === 'upcoming' 
                                 ? "You don't have any upcoming appointments."
                                 : filter === 'past'
@@ -290,7 +290,7 @@ export default function Appointments() {
                         </p>
                         <Button
                             onClick={() => router.push("/appointments/schedule")}
-                            className="bg-gray-900 hover:bg-black text-white rounded-full px-6"
+                            className="bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white rounded-full px-6"
                         >
                             <Plus size={18} className="mr-2" />
                             Schedule Your First Appointment
@@ -299,12 +299,12 @@ export default function Appointments() {
                 ) : (
                     <div className="space-y-4">
                         {filteredAppointments.map((appointment) => (
-                            <div key={appointment._id} className="rounded-2xl border border-gray-200/80 bg-white p-6 shadow-sm hover:shadow-md transition-all">
+                            <div key={appointment._id} className="rounded-2xl border border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] dark:bg-[#242526] p-6 shadow-sm hover:shadow-md transition-all">
                                 <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
                                     {/* Left side - Appointment Info */}
                                     <div className="space-y-4 flex-1">
                                         <div className="flex items-center gap-3">
-                                            <h3 className="text-xl font-semibold text-gray-900">
+                                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                                                 {appointment.petName}
                                             </h3>
                                             <Badge className={`${getStatusColor(appointment.status)} rounded-full px-3 py-1 text-xs font-medium`}>
@@ -315,30 +315,30 @@ export default function Appointments() {
                                             <div className="flex items-center gap-3 text-sm">
                                                 <Calendar size={18} className="text-gray-400" />
                                                 <div>
-                                                    <p className="text-gray-600">{formatDate(appointment.appointmentDate)}</p>
+                                                    <p className="text-gray-600 dark:text-gray-400">{formatDate(appointment.appointmentDate)}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3 text-sm">
                                                 <Clock size={18} className="text-gray-400" />
                                                 <div>
-                                                    <p className="text-gray-600">{formatTime(appointment.appointmentTime)}</p>
+                                                    <p className="text-gray-600 dark:text-gray-400">{formatTime(appointment.appointmentTime)}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3 text-sm">
                                                 <MapPin size={18} className="text-gray-400" />
                                                 <div>
-                                                    <p className="text-gray-600">{appointment.location}</p>
+                                                    <p className="text-gray-600 dark:text-gray-400">{appointment.location}</p>
                                                 </div>
                                             </div>
                                             <div className="text-sm">
                                                 <p className="text-gray-500 text-xs uppercase tracking-wide">Reason</p>
-                                                <p className="text-gray-900 font-medium">{appointment.reason}</p>
+                                                <p className="text-gray-900 dark:text-white font-medium">{appointment.reason}</p>
                                             </div>
                                         </div>
                                         {appointment.notes && (
                                             <div className="text-sm">
                                                 <p className="text-gray-500 text-xs uppercase tracking-wide">Notes</p>
-                                                <p className="text-gray-600">{appointment.notes}</p>
+                                                <p className="text-gray-600 dark:text-gray-400">{appointment.notes}</p>
                                             </div>
                                         )}
                                     </div>
@@ -378,7 +378,7 @@ export default function Appointments() {
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => router.push(`/appointments/edit/${appointment._id}`)}
-                                                className="text-gray-600 hover:text-gray-900 rounded-lg text-xs"
+                                                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg text-xs"
                                             >
                                                 <Edit3 size={14} className="mr-1" />
                                                 Edit
@@ -403,3 +403,4 @@ export default function Appointments() {
         </div>
     );
 }
+

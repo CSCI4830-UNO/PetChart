@@ -103,17 +103,17 @@ export default function AddFleaTickTreatment() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] text-gray-900">
-      <header className="sticky top-0 z-20 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] text-gray-900 dark:text-white">
+      <header className="sticky top-0 z-20 border-b border-gray-200 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-start justify-between py-6">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight">Add Flea & Tick Treatment</h1>
-              <p className="text-sm text-gray-500 mt-1">Record a treatment for a pet</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Record a treatment for a pet</p>
             </div>
             <button
               onClick={() => router.push("/")}
-              className="text-gray-400 hover:text-gray-600 transition-colors p-2"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-2"
               aria-label="Close"
             >
               <ArrowLeft size={24} strokeWidth={1.5} />
@@ -126,18 +126,18 @@ export default function AddFleaTickTreatment() {
         <div className="mb-8 flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm uppercase tracking-[0.16em] text-gray-500">Health</p>
-              <h2 className="text-3xl font-semibold tracking-tight">Track Flea & Tick Treatments</h2>
+              <p className="text-sm uppercase tracking-[0.16em] text-gray-500 dark:text-gray-400">Health</p>
+              <h2 className="text-3xl font-semibold tracking-tight dark:text-white">Track Flea & Tick Treatments</h2>
             </div>
-            <div className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm">
+            <div className="rounded-full border border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#242526] px-4 py-2 text-sm text-gray-700 dark:text-gray-300 shadow-sm">
               🐛 Flea & Tick
             </div>
           </div>
-          <div className="h-1 w-16 rounded-full bg-gray-900"></div>
+          <div className="h-1 w-16 rounded-full bg-gray-900 dark:bg-white"></div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+          <Card className="rounded-2xl border border-gray-200 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg">
                 Treatment Details
@@ -148,10 +148,10 @@ export default function AddFleaTickTreatment() {
                 <div>
                   <Label htmlFor="pet">Select Pet *</Label>
                   <Select value={formData.petId} onValueChange={(v) => handleInputChange('petId', v)}>
-                    <SelectTrigger className="rounded-xl border-gray-200 bg-white h-12 text-gray-900">
+                    <SelectTrigger className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] h-12 text-gray-900 dark:text-white dark:text-white">
                       <SelectValue placeholder="Choose a pet" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white shadow-lg border border-gray-200 rounded-xl">
+                    <SelectContent className="bg-white dark:bg-[#18191a] dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] rounded-xl">
                       {pets.map(p => (
                         <SelectItem key={p._id} value={p._id} className="cursor-pointer">{p.name} - {p.species}</SelectItem>
                       ))}
@@ -167,7 +167,7 @@ export default function AddFleaTickTreatment() {
                     onChange={(e) => handleInputChange('treatment', e.target.value)}
                     required
                     placeholder="e.g., Frontline Plus, NexGard"
-                    className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                    className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400"
                   />
                 </div>
 
@@ -180,7 +180,7 @@ export default function AddFleaTickTreatment() {
                       value={formData.date}
                       onChange={(e) => handleInputChange('date', e.target.value)}
                       required
-                      className="rounded-xl border-gray-200 bg-white text-gray-900"
+                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white"
                     />
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export default function AddFleaTickTreatment() {
                       type="date"
                       value={formData.nextDue}
                       onChange={(e) => handleInputChange('nextDue', e.target.value)}
-                      className="rounded-xl border-gray-200 bg-white text-gray-900"
+                      className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white"
                     />
                   </div>
                 </div>
@@ -202,7 +202,7 @@ export default function AddFleaTickTreatment() {
                     value={formData.notes}
                     onChange={(e) => handleInputChange('notes', e.target.value)}
                     placeholder="Any additional information..."
-                    className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 min-h-[100px]"
+                    className="rounded-xl border-gray-200 dark:border-[#3a3b3c] dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] dark:bg-[#18191a] text-gray-900 dark:text-white dark:text-white placeholder:text-gray-400 min-h-[100px]"
                   />
                 </div>
               </div>
@@ -231,3 +231,6 @@ export default function AddFleaTickTreatment() {
     </div>
   );
 }
+
+
+

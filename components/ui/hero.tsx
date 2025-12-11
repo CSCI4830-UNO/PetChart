@@ -12,10 +12,10 @@ export default function Hero() {
       <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
           
-          <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">
+          <h1 className="text-5xl font-semibold tracking-tight md:text-6xl text-slate-900 dark:text-white">
             Health records your pet deserves.
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
             Track vaccinations, medications, treatments, and appointments — beautifully organized
             and available everywhere. Simple to use. Powerful when you need it.
           </p>

@@ -143,10 +143,10 @@ export default function FleaTickTreatmentHistory() {
 
   if (loading || !pet) {
     return (
-      <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -158,8 +158,8 @@ export default function FleaTickTreatmentHistory() {
   );
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7]">
-      <header className="sticky top-0 z-40 border-b border-gray-200/70 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#18191a]">
+      <header className="sticky top-0 z-40 border-b border-gray-200/70 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center gap-4">
@@ -171,10 +171,10 @@ export default function FleaTickTreatmentHistory() {
                 <ArrowLeft size={24} strokeWidth={1.5} />
               </button>
               <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
+                <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                   Flea & Tick Treatments
                 </h1>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {pet.name}'s treatment history
                 </p>
               </div>
