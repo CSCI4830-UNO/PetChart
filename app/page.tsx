@@ -130,6 +130,15 @@ export default function HomePage() {
                   {userSession.user?.name}
                 </p>
               </div>
+              {userSession.user?.image && (
+                <Image
+                  src={userSession.user.image}
+                  alt={userSession.user.name || "User avatar"}
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-full border border-gray-200"
+                />
+              )}
               <SignOutBtn />
             </div>
           </div>

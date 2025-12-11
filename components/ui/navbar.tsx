@@ -49,16 +49,33 @@ export default function NavBar() {
 
         {/* Links */}
         <div className="hidden md:flex gap-8 text-[15px] font-medium text-slate-700">
-          <Link href="#features" className="hover:text-black transition-colors">Features</Link>
-          <Link href="#privacy" className="hover:text-black transition-colors">Privacy</Link>
-          <Link href="/faq" className="hover:text-black transition-colors">FAQ</Link>
+          <Link href="#features" className="relative hover:text-black transition-colors group">
+            Features
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link href="#privacy" className="relative hover:text-black transition-colors group">
+            Privacy
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link href="/faq" className="relative hover:text-black transition-colors group">
+            FAQ
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-slate-900 transition-all duration-300 group-hover:w-full"></span>
+          </Link>
         </div>
 
         {/* Sign in button */}
         <div className="hidden md:flex gap-3 items-center">
           {session && session.user ? (
             <>
-              {/* might add avatar later */}
+              {session.user.image && (
+                <Image
+                  src={session.user.image}
+                  alt={session.user.name || "User avatar"}
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
               <SignOutBtn />
             </>
           ) : (
