@@ -131,7 +131,7 @@ export default function UploadPhotoMongo({
   // renders the main component
   return (
     <div className="space-y-3">
-      <div className="text-sm font-medium text-slate-900">{label}</div>
+      <div className="text-sm font-medium text-slate-900 dark:text-white">{label}</div>
       <div
         onClick={() => inputRef.current?.click()}
         onDragOver={(e) => {
@@ -142,16 +142,16 @@ export default function UploadPhotoMongo({
         onDrop={handleDrop}
         className={`relative flex cursor-pointer items-center justify-center rounded-xl border border-dashed p-6 text-center transition-colors ${
           isDragging
-            ? "border-slate-500 bg-slate-50"
-            : "border-slate-300 bg-white hover:bg-slate-50"
+            ? "border-slate-500 dark:border-slate-400 bg-slate-50 dark:bg-[#3a3b3c]"
+            : "border-slate-300 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] hover:bg-slate-50 dark:hover:bg-[#242526]"
         }`}
       >
         <div className="space-y-2">
           <div className="text-2xl">📷</div>
-          <div className="text-sm text-slate-600">
-            Drag & drop or <span className="font-semibold text-slate-900">choose a photo</span>
+          <div className="text-sm text-slate-600 dark:text-gray-400">
+            Drag & drop or <span className="font-semibold text-slate-900 dark:text-white">choose a photo</span>
           </div>
-          <div className="text-xs text-slate-500">Up to 8MB • JPG/PNG/WebP</div>
+          <div className="text-xs text-slate-500 dark:text-gray-500">Up to 8MB • JPG/PNG/WebP</div>
         </div>
         <input
           ref={inputRef}
@@ -161,15 +161,15 @@ export default function UploadPhotoMongo({
           onChange={handlePick}
         />
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/70">
-            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-slate-900"></div>
+          <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/70 dark:bg-black/70">
+            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-slate-900 dark:border-gray-200"></div>
           </div>
         )}
       </div>
 
       {preview && (
-        <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-          <div className="relative h-56 w-full bg-slate-100">
+        <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-[#3a3b3c] shadow-sm">
+          <div className="relative h-56 w-full bg-slate-100 dark:bg-[#18191a]">
             <Image
               src={preview}
               alt="Uploaded pet"
@@ -178,12 +178,12 @@ export default function UploadPhotoMongo({
               unoptimized
             />
           </div>
-          <div className="flex items-center justify-between px-4 py-3 text-sm text-slate-700 bg-white">
+          <div className="flex items-center justify-between px-4 py-3 text-sm text-slate-700 dark:text-gray-300 bg-white dark:bg-[#242526]">
             <span>{file?.name || "Current photo"}</span>
             <button
               type="button"
               onClick={handleRemove}
-              className="text-rose-600 hover:text-rose-700"
+              className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300"
             >
               Remove
             </button>
@@ -191,7 +191,7 @@ export default function UploadPhotoMongo({
         </div>
       )}
 
-      {error && <div className="text-xs text-rose-600">{error}</div>}
+      {error && <div className="text-xs text-rose-600 dark:text-rose-400">{error}</div>}
 
     </div>
   );

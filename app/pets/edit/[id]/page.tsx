@@ -251,11 +251,11 @@ export default function EditPet() {
               <p className="text-sm uppercase tracking-[0.16em] text-gray-500">Care</p>
               <h2 className="text-3xl font-semibold tracking-tight">Update {formData.name || "your pet"}</h2>
             </div>
-            <div className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 shadow-sm">
+            <div className="rounded-full border border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#242526] px-4 py-2 text-sm text-gray-700 dark:text-gray-300 shadow-sm">
               {formData.species ? `${getSpeciesEmoji(formData.species)} ${formData.species}` : "Choose a species"}
             </div>
           </div>
-          <div className="h-1 w-16 rounded-full bg-gray-900"></div>
+          <div className="h-1 w-16 rounded-full bg-gray-900 dark:bg-white"></div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -263,10 +263,10 @@ export default function EditPet() {
             {/* Left Column */}
             <div className="space-y-6">
               {/* Basic Info */}
-              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <PawPrint size={20} className="text-gray-900" />
+                    <PawPrint size={20} className="text-gray-900 dark:text-gray-200" />
                     Basic Information
                   </CardTitle>
                 </CardHeader>
@@ -280,7 +280,7 @@ export default function EditPet() {
                         onChange={(e) => handleInputChange("name", e.target.value)}
                         placeholder="e.g., Bella, Max, Whiskers"
                         required
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -290,10 +290,10 @@ export default function EditPet() {
                         value={formData.species}
                         onValueChange={(value) => handleInputChange("species", value)}
                       >
-                        <SelectTrigger className="rounded-xl border-gray-200 bg-white h-12 text-gray-900">
+                        <SelectTrigger className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] h-12 text-gray-900 dark:text-white">
                           <SelectValue placeholder="Choose species" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white shadow-lg border border-gray-200 rounded-xl">
+                        <SelectContent className="bg-white dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] rounded-xl">
                           <SelectItem value="Dog" className="cursor-pointer">
                             🐕 Dog
                           </SelectItem>
@@ -335,7 +335,7 @@ export default function EditPet() {
                         value={formData.breed}
                         onChange={(e) => handleInputChange("breed", e.target.value)}
                         placeholder="e.g., Golden Retriever, Siamese, Parakeet"
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -346,7 +346,7 @@ export default function EditPet() {
                         value={formData.color}
                         onChange={(e) => handleInputChange("color", e.target.value)}
                         placeholder="e.g., Golden, Black and White, Tabby"
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -354,10 +354,10 @@ export default function EditPet() {
               </Card>
 
               {/* Age & Physical Details */}
-              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Calendar size={20} className="text-gray-900" />
+                    <Calendar size={20} className="text-gray-900 dark:text-gray-200" />
                     Age & Physical Details
                   </CardTitle>
                 </CardHeader>
@@ -371,9 +371,9 @@ export default function EditPet() {
                         value={formData.birthday}
                         onChange={(e) => handleInputChange("birthday", e.target.value)}
                         max={new Date().toISOString().split("T")[0]}
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         If provided, age will be calculated automatically
                       </p>
                     </div>
@@ -390,10 +390,10 @@ export default function EditPet() {
                         min="0"
                         max="50"
                         disabled={!!formData.birthday}
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400 disabled:bg-gray-50"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 disabled:bg-gray-50 dark:disabled:bg-[#1a1a1a]"
                       />
                       {formData.birthday && (
-                        <p className="text-xs text-green-600 mt-1">
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                           Calculated: {calculateAgeFromBirthday(formData.birthday)} years
                         </p>
                       )}
@@ -409,7 +409,7 @@ export default function EditPet() {
                         placeholder="e.g., 65"
                         step="0.1"
                         min="0"
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -420,7 +420,7 @@ export default function EditPet() {
                         value={formData.microchipId}
                         onChange={(e) => handleInputChange("microchipId", e.target.value)}
                         placeholder="e.g., 123456789012345"
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -431,7 +431,7 @@ export default function EditPet() {
             {/* Right Column */}
             <div className="space-y-6">
               {/* Notes + Photo Upload */}
-              <Card className="rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg">Additional Information</CardTitle>
                 </CardHeader>
@@ -445,7 +445,7 @@ export default function EditPet() {
                         onChange={(e) => handleInputChange("notes", e.target.value)}
                         placeholder="Any special information about your pet - personality, medical conditions, favorite activities, etc."
                         rows={5}
-                        className="rounded-xl border-gray-200 bg-white text-gray-900 placeholder:text-gray-400"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -465,7 +465,7 @@ export default function EditPet() {
               </Card>
 
               {/* Preview */}
-              <Card className="sticky top-6 rounded-2xl border border-gray-200/80 shadow-sm bg-white">
+              <Card className="sticky top-6 rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg">Pet Preview</CardTitle>
                 </CardHeader>
@@ -473,7 +473,7 @@ export default function EditPet() {
                   <div className="space-y-3">
                     {/* Show uploaded image if present */}
                     {primaryPhoto && (
-                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl ring-1 ring-gray-200">
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl ring-1 ring-gray-200 dark:ring-[#3a3b3c]">
                         <Image
                           src={primaryPhoto}
                           alt={formData.name || "Pet photo"}
@@ -487,9 +487,9 @@ export default function EditPet() {
                     {formData.name && (
                       <div className="text-center">
                         <div className="text-4xl mb-2">{getSpeciesEmoji(formData.species)}</div>
-                        <h3 className="text-xl font-semibold">{formData.name}</h3>
+                        <h3 className="text-xl font-semibold dark:text-white">{formData.name}</h3>
                         {formData.breed && formData.species && (
-                          <p className="text-gray-600">
+                          <p className="text-gray-600 dark:text-gray-400">
                             {formData.breed} {formData.species}
                           </p>
                         )}
@@ -498,8 +498,8 @@ export default function EditPet() {
 
                     {(formData.age || formData.birthday) && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Age</h4>
-                        <p className="text-gray-600">
+                        <h4 className="font-medium text-gray-900 dark:text-white">Age</h4>
+                        <p className="text-gray-600 dark:text-gray-400">
                           {formData.birthday
                             ? `${calculateAgeFromBirthday(formData.birthday)} years old`
                             : formData.age
@@ -511,22 +511,22 @@ export default function EditPet() {
 
                     {formData.weight && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Weight</h4>
-                        <p className="text-gray-600">{formData.weight} lbs</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Weight</h4>
+                        <p className="text-gray-600 dark:text-gray-400">{formData.weight} lbs</p>
                       </div>
                     )}
 
                     {formData.color && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Color</h4>
-                        <p className="text-gray-600">{formData.color}</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Color</h4>
+                        <p className="text-gray-600 dark:text-gray-400">{formData.color}</p>
                       </div>
                     )}
 
                     {formData.microchipId && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Microchip</h4>
-                        <p className="text-gray-600 font-mono text-sm">{formData.microchipId}</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Microchip</h4>
+                        <p className="text-gray-600 dark:text-gray-400 font-mono text-sm">{formData.microchipId}</p>
                       </div>
                     )}
                   </div>
@@ -562,14 +562,14 @@ export default function EditPet() {
                 type="button"
                 variant="outline"
                 onClick={() => router.back()}
-                className="rounded-full border-gray-200 text-gray-800 hover:bg-gray-100"
+                className="rounded-full border-gray-200 dark:border-[#3a3b3c] text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#3a3b3c]"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={loading || isUploading || !formData.name || !formData.species}
-                className="rounded-full bg-gray-900 px-6 text-white hover:bg-black"
+                className="rounded-full bg-gray-900 dark:bg-blue-600 px-6 text-white hover:bg-black dark:hover:bg-blue-700"
               >
                 {loading ? "Updating..." : isUploading ? "Uploading…" : "Update Pet"}
               </Button>

@@ -146,37 +146,35 @@ export default function AddPet() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-[#18191a] dark:via-[#18191a] dark:to-[#242526]">
       {/* Header */}
-      <header className="bg-white dark:bg-[#242526] shadow-sm border-b border-gray-200 dark:border-[#3a3b3c]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center py-6">
-            <Button variant="ghost" onClick={() => router.back()} className="mr-4">
-              <ArrowLeft size={20} className="mr-2" />
-              Back
-            </Button>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                <PawPrint size={24} className="text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Add New Pet</h1>
-                <p className="text-sm text-gray-600">Add a new member to your pet family</p>
-              </div>
+      <header className="sticky top-0 z-20 border-b border-gray-200/70 dark:border-[#3a3b3c]/70 bg-white/80 dark:bg-[#242526]/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-[#242526]/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-6">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Add New Pet</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Add a new member to your pet family</p>
             </div>
+            <button
+              onClick={() => router.back()}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-2"
+              aria-label="Back"
+            >
+              <ArrowLeft size={24} strokeWidth={1.5} />
+            </button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left Column - Basic Information */}
             <div className="space-y-6">
               {/* Basic Info */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PawPrint size={20} className="text-purple-600" />
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <PawPrint size={20} className="text-gray-900 dark:text-gray-200" />
                     Basic Information
                   </CardTitle>
                 </CardHeader>
@@ -191,16 +189,17 @@ export default function AddPet() {
                         onChange={(e) => handleInputChange("name", e.target.value)}
                         placeholder="e.g., Bella, Max, Whiskers"
                         required
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="species">Species/Type *</Label>
                       <Select value={formData.species} onValueChange={(value) => handleInputChange("species", value)}>
-                        <SelectTrigger>
+                        <SelectTrigger className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] h-12 text-gray-900 dark:text-white">
                           <SelectValue placeholder="Choose species" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white">
+                        <SelectContent className="bg-white dark:bg-[#18191a] shadow-lg border border-gray-200 dark:border-[#3a3b3c] rounded-xl">
                           <SelectItem value="Dog">🐕 Dog</SelectItem>
                           <SelectItem value="Cat">🐱 Cat</SelectItem>
                           <SelectItem value="Bird">🐦 Bird</SelectItem>
@@ -223,6 +222,7 @@ export default function AddPet() {
                         value={formData.breed}
                         onChange={(e) => handleInputChange("breed", e.target.value)}
                         placeholder="e.g., Golden Retriever, Siamese, Parakeet"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -234,6 +234,7 @@ export default function AddPet() {
                         value={formData.color}
                         onChange={(e) => handleInputChange("color", e.target.value)}
                         placeholder="e.g., Golden, Black and White, Tabby"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -241,10 +242,10 @@ export default function AddPet() {
               </Card>
 
               {/* Age & Physical Details */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar size={20} className="text-blue-600" />
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Calendar size={20} className="text-gray-900 dark:text-gray-200" />
                     Age & Physical Details
                   </CardTitle>
                 </CardHeader>
@@ -258,8 +259,9 @@ export default function AddPet() {
                         value={formData.birthday}
                         onChange={(e) => handleInputChange("birthday", e.target.value)}
                         max={new Date().toISOString().split("T")[0]}
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white"
                       />
-                      <p className="text-xs text-gray-500 mt-1">If provided, age will be calculated automatically</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">If provided, age will be calculated automatically</p>
                     </div>
 
                     <div>
@@ -274,9 +276,10 @@ export default function AddPet() {
                         min="0"
                         max="50"
                         disabled={!!formData.birthday}
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 disabled:bg-gray-50 dark:disabled:bg-[#1a1a1a]"
                       />
                       {formData.birthday && (
-                        <p className="text-xs text-green-600 mt-1">
+                        <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                           Calculated: {calculateAgeFromBirthday(formData.birthday)} years
                         </p>
                       )}
@@ -292,6 +295,7 @@ export default function AddPet() {
                         placeholder="e.g., 65"
                         step="0.1"
                         min="0"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -303,6 +307,7 @@ export default function AddPet() {
                         value={formData.microchipId}
                         onChange={(e) => handleInputChange("microchipId", e.target.value)}
                         placeholder="e.g., 123456789012345"
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
                   </div>
@@ -313,9 +318,9 @@ export default function AddPet() {
             {/* Right Column - Additional Info & Preview */}
             <div className="space-y-6">
               {/* Notes + Photo Upload */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Additional Information</CardTitle>
+              <Card className="rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg">Additional Information</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -327,6 +332,7 @@ export default function AddPet() {
                         onChange={(e) => handleInputChange("notes", e.target.value)}
                         placeholder="Any special information about your pet - personality, medical conditions, favorite activities, etc."
                         rows={5}
+                        className="rounded-xl border-gray-200 dark:border-[#3a3b3c] bg-white dark:bg-[#18191a] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                       />
                     </div>
 
@@ -341,15 +347,15 @@ export default function AddPet() {
               </Card>
 
               {/* Preview */}
-              <Card className="sticky top-6">
-                <CardHeader>
-                  <CardTitle>Pet Preview</CardTitle>
+              <Card className="sticky top-6 rounded-2xl border border-gray-200/80 dark:border-[#3a3b3c]/80 shadow-sm bg-white dark:bg-[#242526]">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg">Pet Preview</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {/* Show uploaded photo if present */}
                     {formData.photoUrl && (
-                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg ring-1 ring-gray-200">
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl ring-1 ring-gray-200 dark:ring-[#3a3b3c]">
                         <Image
                           src={formData.photoUrl}
                           alt={formData.name || "Pet photo"}
@@ -363,9 +369,9 @@ export default function AddPet() {
                     {formData.name && (
                       <div className="text-center">
                         <div className="text-4xl mb-2">{getSpeciesEmoji(formData.species)}</div>
-                        <h3 className="text-xl font-bold text-gray-900">{formData.name}</h3>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{formData.name}</h3>
                         {formData.breed && formData.species && (
-                          <p className="text-gray-600">
+                          <p className="text-gray-600 dark:text-gray-400">
                             {formData.breed} {formData.species}
                           </p>
                         )}
@@ -374,8 +380,8 @@ export default function AddPet() {
 
                     {(formData.age || formData.birthday) && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Age</h4>
-                        <p className="text-gray-600">
+                        <h4 className="font-medium text-gray-900 dark:text-white">Age</h4>
+                        <p className="text-gray-600 dark:text-gray-400">
                           {formData.birthday
                             ? `${calculateAgeFromBirthday(formData.birthday)} years old`
                             : formData.age
@@ -387,27 +393,27 @@ export default function AddPet() {
 
                     {formData.weight && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Weight</h4>
-                        <p className="text-gray-600">{formData.weight} lbs</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Weight</h4>
+                        <p className="text-gray-600 dark:text-gray-400">{formData.weight} lbs</p>
                       </div>
                     )}
 
                     {formData.color && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Color</h4>
-                        <p className="text-gray-600">{formData.color}</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Color</h4>
+                        <p className="text-gray-600 dark:text-gray-400">{formData.color}</p>
                       </div>
                     )}
 
                     {formData.microchipId && (
                       <div>
-                        <h4 className="font-medium text-gray-900">Microchip</h4>
-                        <p className="text-gray-600 font-mono text-sm">{formData.microchipId}</p>
+                        <h4 className="font-medium text-gray-900 dark:text-white">Microchip</h4>
+                        <p className="text-gray-600 dark:text-gray-400 font-mono text-sm">{formData.microchipId}</p>
                       </div>
                     )}
 
                     {!formData.name && !formData.species && (
-                      <div className="text-center py-8 text-gray-400">
+                      <div className="text-center py-8 text-gray-400 dark:text-gray-500">
                         <PawPrint size={48} className="mx-auto mb-4" />
                         <p>Fill in the form to see pet preview</p>
                       </div>
@@ -420,13 +426,18 @@ export default function AddPet() {
 
           {/* Submit Button */}
           <div className="flex justify-end space-x-4 pt-6">
-            <Button type="button" variant="outline" onClick={() => router.back()}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+              className="rounded-full border-gray-200 dark:border-[#3a3b3c] text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#3a3b3c]"
+            >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={loading || isUploading || !formData.name || !formData.species}
-              className="bg-purple-600 hover:bg-purple-700"
+              className="rounded-full bg-gray-900 dark:bg-blue-600 px-6 text-white hover:bg-black dark:hover:bg-blue-700"
             >
               {loading ? "Adding Pet..." : isUploading ? "Uploading…" : "Add Pet"}
             </Button>
